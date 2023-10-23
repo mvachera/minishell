@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/16 20:09:27 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/23 20:20:02 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ void	sort_token(char **tab, int *token, int i)
 			token[i] = D_CHEVRON_D;
 		else if (check_builtin(tab[i]) == 1)
 			token[i] = BUILTIN;
-		else if (ft_strcmp(tab[i], "LIMITER") == 0
-			&& i != 0 && token[i - 1] == D_CHEVRON_G)
+		else if (i != 0 && token[i - 1] == D_CHEVRON_G)
 			token[i] = HERE_DOC;
 		else
 			sort_token2(tab, token, i);
@@ -39,11 +38,11 @@ void	sort_token(char **tab, int *token, int i)
 
 void	sort_token2(char **tab, int *token, int i)
 {
-	if (i != 0 && (ft_strcmp(tab[i - 1], "<") == 0
-			|| ft_strcmp(tab[i - 1], ">") == 0
-			|| ft_strcmp(tab[i - 1], "<<") == 0
-			|| ft_strcmp(tab[i - 1], ">>") == 0))
-			token[i] = FILES;
+	if (i != 0 && token[i - 1] == CHEVRON_G)
+			token[i] = IN_FILES;
+	else if (i != 0 && (token[i - 1] == CHEVRON_D
+			|| token[i - 1] == D_CHEVRON_D))
+			token[i] = OUT_FILES;
 	else if (i != 0 && (token[i - 1] == COMMAND || token[i - 1] == ARGUMENT
 			|| token[i -1] == BUILTIN)
 		&& is_metacaractere(tab[i][0]) == 0)

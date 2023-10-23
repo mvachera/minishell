@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:41:17 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/17 16:05:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/23 18:13:39 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,6 @@ char	*str_johnny(char *s1, char *s2)
 	}
 	dst[i] = '\0';
 	return (dst);
-}
-
-void	je_souffre_trop(t_pipex *pipex)
-{
-	pipex->str_end = str_johnny(pipex->limiteur, "\n");
-	if (!pipex->str_end)
-		return (ft_printf("Function str_johnny fail\n"),
-			exit(1));
 }
 
 int	ft_count(char const *s, char c)

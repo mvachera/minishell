@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/17 17:35:59 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/23 21:06:44 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	execute(t_pipex *pipex, char *command, char **tab)
 		execve(command, tab, pipex->envp);
 		free(command);
 	}
-	free_map(tab);
 	free_pipex(pipex);
+	free_map(tab);
 	return (exit(EXIT_FAILURE));
 }
 
@@ -57,25 +57,21 @@ void	child_process(t_pipex *pipex, int index)
 	char	**tab2;
 	char	*cmd;
 
-	if (index == 0 || index == pipex->cmd_count - 1)
-		je_souffre(pipex, index);
 	if (index != 0)
 		dup2(pipex->prev, 0);
 	if (index != pipex->cmd_count - 1)
 		dup2(pipex->pipefd[1], 1);
 	close(pipex->pipefd[1]);
 	close(pipex->pipefd[0]);
-	// if (check_builtin(pipex->cmd_args[index]) == 1)
-	// {
-	// 	//printf("%s", pipex->cmd_args[index]);
-	// 	execute_builtin(pipex->cmd_args[index], pipex);
-	// }
+	openfiles(pipex, pipex->cmd_args[index]);
+	if (check_builtin(pipex->cmd_args[index]) == 1)
+		execute_builtin(pipex->cmd_args[index], pipex);
 	tab2 = ft_split(pipex->cmd_args[index], ' ');
 	if (!tab2)
 		return (ft_printf("Function split fail\n"), exit(EXIT_FAILURE));
 	if (!*tab2)
-		return (free_map(tab2), ft_printf("L'argument est incorrect\n")
-			, exit(EXIT_FAILURE));
+		return (free_map(tab2), ft_printf("Incorrect argument\n"),
+			exit(EXIT_FAILURE));
 	cmd = get_cmd(tab2, pipex);
 	execute(pipex, cmd, tab2);
 }
@@ -92,7 +88,8 @@ int	ft_exec(t_pipex *pipex)
 		pipex->pid[i] = fork();
 		if (pipex->pid[i] == -1)
 			return (ft_printf("Function fork fail\n"),
-				close(pipex->pipefd[0]), close(pipex->pipefd[1]), 0);
+				close(pipex->pipefd[0]),
+				close(pipex->pipefd[1]), 0);
 		else if (pipex->pid[i] == 0)
 			child_process(pipex, i);
 		close(pipex->pipefd[1]);
@@ -107,28 +104,25 @@ int	ft_exec(t_pipex *pipex)
 	return (1);
 }
 
-int	main_pipex(char *str, t_pipex *pipex, char **envp)
+int	main_pipex(char *str, t_pipex *pipex)
 {
 	int	tmp;
 
-	pipex->envp = envp;
 	parcours_cmd(pipex);
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count >= 1024)
-		return (ft_printf("Pipex: too many commands\n"), free_memory(pipex),
-			0);
+		return (ft_printf("Pipex: too many commands\n"), free_memory(pipex), 0);
 	pipex->cmd_args = get_all_cmd(pipex);
 	if (!pipex->cmd_args)
 		return (free_memory(pipex), 0);
-	ft_init_pipex(pipex);
+	check_here_doc(pipex);
 	if (pipex->here_doc == 1)
 		ft_here_doc(pipex);
-	// test_print(pipex);
 	tmp = ft_exec(pipex);
-	if (pipex->here_doc == 1)
-		unlink(pipex->in_name);
 	if (tmp == 1)
 		close(pipex->pipefd[0]);
+	if (pipex->here_doc == 1)
+		unlink(pipex->file_here_doc);
 	free_pipex(pipex);
 	return (1);
 }

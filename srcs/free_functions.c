@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_error.c                                     :+:      :+:    :+:   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/16 17:44:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/23 18:56:32 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,10 @@ void	free_pipex(t_pipex *pipex)
 		free_map(pipex->tab);
 	if (pipex->token != NULL)
 		free(pipex->token);
-	if (pipex->in_name != NULL)
-		free(pipex->in_name);
-	if (pipex->out_name != NULL)
-		free(pipex->out_name);
 	if (pipex->cmd_args != NULL)
 		free_map(pipex->cmd_args);
-	if (pipex->envp2 != NULL)
-		free_map(pipex->envp2);
+	// if (pipex->envp2 != NULL)
+	// 	free_map(pipex->envp2);
 }
 
 void	test_print(t_pipex *pipex)
@@ -43,8 +39,6 @@ void	test_print(t_pipex *pipex)
 	i = 0;
 	printf("Start exect :\n\n");
 	printf("%d\n\n", pipex->cmd_count);
-	printf("%s\n\n", pipex->in_name);
-	printf("%s\n\n", pipex->out_name);
 	while (pipex->cmd_args[i])
 	{
 		printf("%s\n\n", pipex->cmd_args[i]);
