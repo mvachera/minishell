@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 20:30:47 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:34:37 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_pipex
 	char	**envp;
 	char	**envp2;
 	char	*limiteur;
-	char	*str_end;
 	char	*file_here_doc;
 	int		cmd_count;
 	int		pipefd[2];
@@ -47,9 +46,6 @@ typedef struct s_pipex
 
 	char	**tab;
 	int		*token;
-
-	char	**files;
-	int		*type;
 
 	int		code_err;
 }			t_pipex;
@@ -80,7 +76,6 @@ void		ft_here_doc(t_pipex *pipex);
 char		*str_johnny(char *s1, char *s2);
 int			ft_count(char const *s, char c);
 int			nb_cmd(t_pipex *pipex);
-void		je_souffre_trop(t_pipex *pipex);
 
 void		echo_command(char **arg, int choice, int nb_arg);
 void		cd_utils(char *path);
@@ -111,6 +106,7 @@ int			stop_str(char *str);
 int			check_tab(char **tab, int count);
 void		handle_quotes(char *str);
 char		*handle_quotes2(char *str);
+void		modif_to_do(t_pipex *pipex);
 int			check_first_str(char *str);
 int			is_metacaractere(char c);
 char		*cpy(char *str, int i, int j);

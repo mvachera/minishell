@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 19:58:05 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:36:51 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	create_tab(char *str, t_pipex *pipex)
 	if (!pipex->token)
 		return (free_map(pipex->tab));
 	sort_token(pipex->tab, pipex->token, i);
+	modif_to_do(pipex);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
 }
@@ -46,7 +47,7 @@ void	count_nb_tab(char *str, int *count)
 
 	i = 0;
 	(*count) = 0;
-	while (str[i] && i < stop_str(str))
+	while (str[i] && i <= stop_str(str))
 	{
 		while ((str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) && str[i])
 			i++;
@@ -103,8 +104,6 @@ void	extract_to_tab2(char *str, int *i, int *j)
 	{
 		while (is_metacaractere(str[*j]) == 1 && str[*j])
 			(*j)++;
-		if (str[*j] == '|')
-			return ;
 	}
 	else if (is_metacaractere(str[*i]) == 0)
 		letters_arg(str, j);

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:41:01 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 20:31:04 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:34:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,11 @@ char	**find_path(char **envp)
 	return (NULL);
 }
 
-void	je_souffre_trop(t_pipex *pipex)
-{
-	pipex->str_end = str_johnny(pipex->limiteur, "\n");
-	if (!pipex->str_end)
-		return (ft_printf("Function str_johnny fail\n"),
-			free(pipex->limiteur), exit(1));
-}
-
 void	ft_here_doc(t_pipex *pipex)
 {
 	char	*str;
 	int		fd;
 
-	je_souffre_trop(pipex);
 	fd = open(pipex->file_here_doc, O_RDWR | O_CREAT, 0664);
 	if (fd == -1)
 		return (ft_printf("Fail open here_doc\n"), exit(EXIT_FAILURE));
@@ -48,7 +39,7 @@ void	ft_here_doc(t_pipex *pipex)
 		str = get_next_line(0, 0);
 		if (!str)
 			break ;
-		if (!ft_strcmp(str, pipex->str_end))
+		if (!ft_strcmp(str, pipex->limiteur))
 		{
 			free(str);
 			break ;

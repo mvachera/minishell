@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 21:22:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:32:06 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ void	handle_in_files(t_pipex *pipex, int i)
 {
 	while (i >= 0 && pipex->token[i] != PIPE)
 		i--;
-	if (pipex->token[i] == PIPE && pipex->tab[i + 1] != NULL)
+	if ((i != 0 || pipex->token[i] == PIPE)
+		&& pipex->tab[i + 1] != NULL)
 		i++;
+	else
+		return ;
 	while (pipex->tab[i] && pipex->token[i] != PIPE)
 	{
-		if (pipex->token[i] == IN_FILES)
+		if (pipex->token[i] == IN_FILES || pipex->token[i] == HERE_DOC)
 		{
-			pipex->fd = open(pipex->tab[i], O_RDONLY);
+			if (pipex->token[i] == IN_FILES)
+				pipex->fd = open(pipex->tab[i], O_RDONLY);
+			else if (pipex->token[i] == HERE_DOC)
+				pipex->fd = open(pipex->file_here_doc, O_RDONLY);
 			if (pipex->fd == -1)
 			{
 				ft_printf("%s : fail to open file\n", pipex->tab[i]);
@@ -59,11 +65,11 @@ void	handle_out_files(t_pipex *pipex, int i)
 		if (pipex->token[i] == OUT_FILES)
 		{
 			if (i != 0 && pipex->token[i - 1] == CHEVRON_D)
-				pipex->fd = open(pipex->tab[i], O_CREAT | O_RDWR | O_TRUNC,
-						0666);
+				pipex->fd = open(pipex->tab[i],
+						O_CREAT | O_RDWR | O_TRUNC, 0666);
 			else if (i != 0 && pipex->token[i - 1] == D_CHEVRON_D)
-				pipex->fd = open(pipex->tab[i], O_CREAT | O_RDWR | O_APPEND,
-						0666);
+				pipex->fd = open(pipex->tab[i],
+						O_CREAT | O_RDWR | O_APPEND, 0666);
 			if (pipex->fd == -1)
 			{
 				ft_printf("%s : fail to open file\n", pipex->tab[i]);
@@ -86,12 +92,14 @@ void	check_here_doc(t_pipex *pipex)
 	{
 		if (pipex->token[i] == HERE_DOC)
 		{
-			ft_printf("here_doc\n");
 			pipex->here_doc = 1;
 			pipex->file_here_doc = "here_doc";
-			pipex->limiteur = ft_strdup(pipex->tab[i]);
+			pipex->limiteur = str_johnny(pipex->tab[i], "\n");
 			if (!pipex->limiteur)
+			{
+				free_pipex(pipex);
 				exit(1);
+			}
 		}
 		i++;
 	}

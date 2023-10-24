@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 19:54:58 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:24:00 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ int	check_tab(char **tab, int count)
 	i = 0;
 	if (ft_strcmp(tab[0], "|") == 0)
 		return (ft_printf("syntax error near unexpected token `|'\n"), 0);
-	if (is_metacaractere(tab[count - 1][0]) == 1)
-		return (ft_printf("syntax error near unexpected token `newline'\n"), 0);
 	while (tab[i])
 	{
 		if (tab[i][0] == '\'' || tab[i][0] == '\"')
 			handle_quotes(tab[i]);
-		if (tab[i + 1] && is_metacaractere(tab[i][0])
-			&& is_metacaractere(tab[i + 1][0]))
+		if (tab[i + 1] && is_metacaractere(tab[i][0] == 1)
+			&& is_metacaractere(tab[i + 1][0]) == 1)
 			return (ft_printf("syntax error near unexpected token `%s'\n",
 					tab[i + 1]), 1);
 		i++;
 	}
+	if (is_metacaractere(tab[count - 1][0]) == 1)
+		return (ft_printf("syntax error near unexpected token `newline'\n"), 0);
 	return (1);
 }
 
