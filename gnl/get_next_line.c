@@ -5,184 +5,156 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:27:18 by mvachera          #+#    #+#             */
-/*   Updated: 2023/09/08 22:34:20 by mvachera         ###   ########.fr       */
+/*   Created: 2023/05/22 13:22:40 by elcesped          #+#    #+#             */
+/*   Updated: 2023/10/24 19:22:36 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*Fonction principale.
-
- * Pour read_and_stash(fd, &stash); 
-	* 1. Lire depuis un fichier et ajouter ce qui a ete lu a la liste chainee.
-
- * Pour extract_line(stash, &line);
-        * 2. Extraire dans line, ce qui se trouve dans stash.
-
- * Pour clean_stash(&stash);
-        * 3. nettoyer la stash.*/
-
-char	*get_next_line(int fd, int tofree)
+char	*ft_buffer(int fd)
 {
-	static t_lst	*stash = NULL;
-	char			*line;
+	int		index;
+	char	*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	index = 0;
+	buffer = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!buffer)
 		return (NULL);
-	if (tofree)
-		return (free_stash(stash), NULL);
-	line = NULL;
-	read_and_stash(fd, &stash);
-	if (!stash)
-		return (NULL);
-	extract_to_line(stash, &line);
-	clean_node(&stash);
-	if (line[0] == '\0')
+	index = read(fd, buffer, BUFFER_SIZE);
+	if (index == -1 || (index == 0 && buffer[index] == '\0'))
 	{
-		free_stash(stash);
-		stash = NULL;
-		free(line);
+		free(buffer);
 		return (NULL);
 	}
-	return (line);
+	return (buffer);
 }
 
-// Utilise read() pour ajouter les caractere a la variable statique (stash).
-
-void	read_and_stash(int fd, t_lst **stash)
+char	*ft_switch(char *result, char *buffer)
 {
-	char	*buf;
-	int		readed;
+	char	*temp_result;
+	int		k;
 
-	readed = 1;
-	while (!found_newline(*stash) && readed != 0)
+	k = 0;
+	temp_result = ft_calloc(ft_lenght(result, buffer), 1);
+	if (!temp_result)
+		return (NULL);
+	if (!result)
 	{
-		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!buf)
-			return ;
-		readed = (int)read(fd, buf, BUFFER_SIZE);
-		if ((*stash == NULL && readed == 0) || readed == -1)
+		result = ft_calloc(ft_lenght(NULL, buffer), 1);
+		if (!result)
 		{
-			free(buf);
-			return ;
+			free(temp_result);
+			return (NULL);
 		}
-		buf[readed] = '\0';
-		lst_new(stash, buf, readed);
-		free(buf);
 	}
+	while (result[k] != '\0')
+		k++;
+	ft_memcpy(temp_result, result, ft_strlensep(result, '\0'));
+	if (ft_strchr(buffer, '\n'))
+		ft_memcpy(temp_result + k, buffer, ft_strlensep(buffer, '\n') + 1);
+	else
+		ft_memcpy(temp_result + k, buffer, ft_strlensep(buffer, '\0'));
+	free(result);
+	return (temp_result);
 }
 
-/* Ajoute le contenu du buffer (variable temporaire) a la fin de notre variable
- * statique(stash).*/
-
-void	lst_new(t_lst **stash, char *buf, int readed)
+char	*ft_stocktemp(char *tostock)
 {
-	t_lst	*new;
-	t_lst	*last;
+	int		k;
 	int		i;
+	char	*temp;
 
-	new = malloc(sizeof(t_lst));
-	if (!new)
-		return ;
-	last = g_l_n(*stash);
+	temp = NULL;
+	k = 0;
 	i = 0;
-	new->next = NULL;
-	new->content = malloc(sizeof(char) * (readed + 1));
-	if (!new->content)
-		return ;
-	while (buf[i] && i < readed)
+	if ((!tostock))
+		return (NULL);
+	if (tostock[k] != '\0' && tostock)
 	{
-		new->content[i] = buf[i];
-		i++;
+		temp = ft_calloc(ft_strlensep(tostock, '\0') + 1, 1);
+		if (!temp)
+			return (NULL);
+		while (tostock[k] != '\0')
+			temp[i++] = tostock[k++];
 	}
-	new->content[i] = '\0';
-	if (*stash == NULL)
-	{
-		*stash = new;
-		return ;
-	}
-	last->next = new;
+	return (temp);
 }
 
-/* Extrait tout les caracteres de notre variable statique (stash) 
- * et les stockes tous dans la variable ligne.
- * S'arrete lors de la premiere occurence du caractere '\n' qu'il rencontre.*/
-
-void	extract_to_line(t_lst *stash, char **line)
+char	*ft_maketempb(char *tostock, int fd)
 {
-	int	i;
-	int	j;
+	char		*res;
+	static char	*temp[1024];
+	char		*newtemp;
 
-	if (stash == NULL)
-		return ;
-	j = 0;
-	len_line(stash, line);
-	if (*line == NULL)
-		return ;
-	while (stash)
+	if (temp[fd])
 	{
-		i = 0;
-		while (stash->content[i])
+		res = ft_calloc(ft_lenght(NULL, temp[fd]), 1);
+		if (!res)
+			return (NULL);
+		if (!ft_strchr(temp[fd], '\n'))
+			res = ft_memcpy(res, temp[fd], ft_strlensep(temp[fd], '\0'));
+		else
 		{
-			if (stash->content[i] == '\n')
-			{
-				(*line)[j++] = stash->content[i];
-				break ;
-			}
-			(*line)[j++] = stash->content[i++];
+			res = ft_memcpy(res, temp[fd], ft_strlensep(temp[fd], '\n') + 1);
+			newtemp = ft_stocktemp(ft_strchr(temp[fd], '\n') + 1);
+			free(temp[fd]);
+			temp[fd] = newtemp;
+			return (res);
 		}
-		stash = stash->next;
+		free(temp[fd]);
+		temp[fd] = NULL;
+		return (res);
 	}
-	(*line)[j] = '\0';
+	temp[fd] = ft_stocktemp(tostock);
+	return (NULL);
 }
 
-/* Apres avoir lu la ligne, nous n'avons desormais plus besoin des caracteres.
- * Cette fonction nettoie la variable statique (stash), pour que les caracteres 
- * qui n'ont pas ete retourner a la fin de get_next_line 
- * reste dans notre varaible statique (stash).*/
-
-void	clean_node(t_lst **stash)
+char	*get_next_line(int fd)
 {
-	t_lst	*clean;
-	t_lst	*last;
-	int		i;
-	int		j;
+	char	*buffer;
+	char	*result;
 
-	clean = malloc(sizeof(t_lst));
-	if (*stash == NULL || clean == NULL)
-		return ;
-	clean->next = NULL;
-	last = g_l_n(*stash);
-	i = 0;
-	j = 0;
-	while (last->content[i] != '\0' && last->content[i] != '\n')
-		i++;
-	if (last->content[i] == '\n')
-		i++;
-	clean->content = malloc(sizeof(char *) * ((len(last->content) - i) + 1));
-	if (!clean->content)
-		return ;
-	while (last->content[i])
-		clean->content[j++] = last->content[i++];
-	clean->content[j] = '\0';
-	free_stash(*stash);
-	*stash = clean;
+	if (!(fd >= 0))
+		return (NULL);
+	result = ft_maketempb(NULL, fd);
+	if (result && ft_strchr(result, '\n'))
+		return (result);
+	while (1)
+	{
+		buffer = ft_buffer(fd);
+		if (!buffer)
+			return (result);
+		result = ft_switch(result, buffer);
+		if (ft_strchr(buffer, '\n') != NULL || (!buffer))
+			break ;
+		free(buffer);
+		if (!result)
+			return (NULL);
+	}
+	if (ft_strchr(buffer, '\n') != NULL && result)
+		ft_maketempb(ft_strchr(buffer, '\n') + 1, fd);
+	free(buffer);
+	return (result);
 }
 
-/*int     main(void)
-{
-        int             fd;
-        char    *line;
+//int	main(void)
+//{
+//	int	fd;
+//	char	*line;
 
-        fd = open("map.ber", O_RDONLY);
-        while (1)
-        {
-                line = get_next_line(fd);
-                printf("%s", line);
-                if (line == NULL)
-                        break ;
-                free(line);
-        }
-        return (0);
-}*/
+//	fd = 0;
+//	fd = open("text_1.txt", fd);
+
+//	while (1)
+//	{
+//		line = get_next_line(fd);
+//		printf("%s\n", line);
+
+//		if (line == NULL)
+//			break ;
+//		free(line);
+//	}
+
+//	close(fd);
+//}

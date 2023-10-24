@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 17:36:51 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 21:12:35 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	create_tab(char *str, t_pipex *pipex)
 	extract_to_tab(pipex->tab, str, count);
 	if (!pipex->tab)
 		return ;
-	if (check_tab(pipex->tab, count) == 0)
-		return (free_map(pipex->tab));
+	check_quotes(pipex->tab);
 	i = 0;
 	pipex->token = malloc(sizeof(int) * count);
 	if (!pipex->token)
 		return (free_map(pipex->tab));
 	sort_token(pipex->tab, pipex->token, i);
-	modif_to_do(pipex);
+	if (check_random(pipex, count) == 1)
+		return (free_memory(pipex));
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 17:32:06 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:02:59 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	handle_in_files(t_pipex *pipex, int i)
 				exit(1);
 			}
 			dup2(pipex->fd, 0);
+			close(pipex->fd);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 20:20:02 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:25:12 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	sort_token2(char **tab, int *token, int i)
 			token[i] = OUT_FILES;
 	else if (i != 0 && (token[i - 1] == COMMAND || token[i - 1] == ARGUMENT
 			|| token[i -1] == BUILTIN)
-		&& is_metacaractere(tab[i][0]) == 0)
+		&& is_meta_string(tab[i]) == 0)
 			token[i] = ARGUMENT;
-	else if (is_metacaractere(tab[i][0]) == 0)
+	else if (is_meta_string(tab[i]) == 0)
 			token[i] = COMMAND;
 	else
 			token[i] = RANDOM;

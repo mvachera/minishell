@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/19 20:08:33 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:55:02 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,17 @@ void	echo_command(char **arg, int choice, int nb_arg)
 	if (nb_arg == 0)
 	{
 		if (choice == 1)
-			ft_putstr_fd("\n", 1);
+			printf("\n");
 		return ;
 	}
-	while (arg[i + 1])
+	while (i < nb_arg - 1)
 	{
-		ft_putstr_fd(arg[i], 1);
-		ft_putstr_fd(" ", 1);
+		printf("%s ", arg[i]);
 		i++;
 	}
-	if (choice == 0)
-		ft_putstr_fd(arg[i], 1);
-	else
-	{
-		ft_putstr_fd(arg[i], 1);
-		ft_putstr_fd("\n", 1);
-	}
+	printf("%s", arg[i]);
+	if (choice == 1)
+		printf("\n");
 }
 
 void	cd_command(char *path)

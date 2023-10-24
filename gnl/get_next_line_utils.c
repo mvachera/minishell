@@ -5,97 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 18:28:03 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 18:17:51 by mvachera         ###   ########.fr       */
+/*   Created: 2023/05/25 12:34:37 by elcesped          #+#    #+#             */
+/*   Updated: 2023/10/24 19:29:46 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/* Cherche le '\n' dans le noeud envoyer en parametre 
- * (le dernier de la liste du coup) de la liste chainee.*/
-
-int	found_newline(t_lst *stash)
+char	*ft_strchr(const char *s, int c)
 {
-	int		i;
-	t_lst	*last;
+	int	i;
 
-	if (stash == NULL)
+	i = 0;
+	if (!s || !c)
+		return (NULL);
+	while (s[i] && s[i] != (unsigned char)c)
+		i++;
+	if (s[i] == '\0' && (unsigned char)c != '\0')
+		return (NULL);
+	return ((char *)(&s[i]));
+}
+
+size_t	ft_lenght(char *temp, char *buffer)
+{
+	int	result;
+
+	result = 0;
+	if (temp == NULL && buffer == NULL)
 		return (0);
-	i = 0;
-	last = g_l_n(stash);
-	while (last->content[i])
+	else if (ft_strchr(temp, '\n') != NULL)
+		result = ft_strlensep(temp, '\n') + 2;
+	else if (ft_strchr(temp, '\n') == NULL)
 	{
-		if (last->content[i] == '\n')
-			return (1);
-		i++;
+		if (ft_strchr(buffer, '\n') != NULL)
+			result = ft_strlensep(temp, '\n') + ft_strlensep(buffer, '\n') + 2;
+		else if (ft_strchr(buffer, '\n') == NULL)
+			result = ft_strlensep(temp, '\n') + ft_strlensep(buffer, '\n') + 1;
 	}
-	return (0);
+	return (result);
 }
 
-// Retourne un pointeur sur le dernier element de la liste chainee.
-
-t_lst	*g_l_n(t_lst *stash)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	t_lst	*current;
-
-	current = stash;
-	while (current && current->next)
-		current = current->next;
-	return (current);
-}
-
-/* Calcule le nombre de caracteres dans la ligne actuelle.
- * On inclus aussi le '\n' s'il y en a un et on alloue de la memoire avec 
- * la taille obtenue.*/
-
-void	len_line(t_lst *stash, char **line)
-{
-	int	len;
-	int	i;
-
-	len = 0;
-	while (stash)
-	{
-		i = 0;
-		while (stash->content[i])
-		{
-			if (stash->content[i] == '\n')
-			{
-				len++;
-				break ;
-			}
-			i++;
-			len++;
-		}
-		stash = stash->next;
-	}
-	*line = malloc(sizeof(char) * (len + 1));
-}
-
-/* On libere la stash en entier.*/
-
-void	free_stash(t_lst *stash)
-{
-	t_lst	*current;
-	t_lst	*next;
-
-	current = stash;
-	while (current)
-	{
-		free(current->content);
-		next = current->next;
-		free(current);
-		current = next;
-	}
-}
-
-int	len(const char *str)
-{
-	int	i;
+	const char			*strsrc;
+	char				*strdest;
+	long unsigned int	i;
 
 	i = 0;
-	while (str[i])
+	if (!dest && !src)
+		return (NULL);
+	strsrc = src;
+	strdest = dest;
+	while (i < n)
+	{
+		strdest[i] = strsrc[i];
 		i++;
-	return (i);
+	}
+	return (dest);
 }
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	unsigned char	*r;
+	size_t			t;
+
+	if (size != 0 && nmemb > sizeof(char) * 2147483424 / size)
+		return (NULL);
+	t = nmemb * size;
+	r = (unsigned char *)malloc(sizeof(char) * t);
+	if (!r)
+		return (NULL);
+	while (t != 0)
+	{
+		r[t - 1] = '\0';
+		t--;
+	}
+	return (r);
+}
+
+int	ft_strlensep(char *str, char charset)
+{
+	int	k;
+
+	k = 0;
+	if (!str)
+		return (0);
+	while (str[k] != charset && str[k])
+		k++;
+	return (k);
+}
+// determine la longueur de la ligne

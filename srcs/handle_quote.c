@@ -6,11 +6,30 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 17:12:39 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 21:12:25 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	check_quotes(char **tab)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (tab[i])
+	{
+		if (tab[i][0] == '\'' || tab[i][0] == '\"')
+		{
+			handle_quotes(tab[i]);
+			tmp = handle_quotes2(tab[i]);
+			free(tab[i]);
+			tab[i] = tmp;
+		}
+		i++;
+	}
+}
 
 void	handle_quotes(char *str)
 {
@@ -49,22 +68,4 @@ char	*handle_quotes2(char *str)
 	}
 	dest[j] = '\0';
 	return (dest);
-}
-
-void	modif_to_do(t_pipex *pipex)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	while (pipex->tab[i])
-	{
-		if (pipex->tab[i][0] == '\'' || pipex->tab[i][0] == '\"')
-		{
-			tmp = handle_quotes2(pipex->tab[i]);
-			free(pipex->tab[i]);
-			pipex->tab[i] = tmp;
-		}
-		i++;
-	}
 }

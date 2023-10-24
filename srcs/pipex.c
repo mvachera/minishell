@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 21:06:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:03:11 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	main_pipex(char *str, t_pipex *pipex)
 {
 	int	tmp;
 
+	pipex->here_doc = 0;
 	parcours_cmd(pipex);
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count >= 1024)

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 17:34:37 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/24 21:12:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,12 @@ void		extract_to_tab(char **tab, char *str, int count);
 void		extract_to_tab2(char *str, int *i, int *j);
 void		letters_arg(char *str, int *j);
 int			stop_str(char *str);
-int			check_tab(char **tab, int count);
+void		check_quotes(char **tab);
 void		handle_quotes(char *str);
 char		*handle_quotes2(char *str);
-void		modif_to_do(t_pipex *pipex);
+int			check_random(t_pipex *pipex, int count);
 int			check_first_str(char *str);
+int			is_meta_string(char *str);
 int			is_metacaractere(char c);
 char		*cpy(char *str, int i, int j);
 void		sort_token(char **tab, int *token, int i);
@@ -129,7 +130,5 @@ void		openfiles(t_pipex *pipex, char *cmd);
 void		handle_in_files(t_pipex *pipex, int i);
 void		handle_out_files(t_pipex *pipex, int i);
 void		check_here_doc(t_pipex *pipex);
-
-void		test_print(t_pipex *pipex);
 
 #endif
