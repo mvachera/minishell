@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 19:55:02 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 20:43:06 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,18 @@ void	export_command(t_pipex *pipex, char *str)
 	env_count = 0;
 	while (pipex->envp[env_count] != NULL)
 		env_count++;
-	new_envp = malloc(sizeof(char *) * (env_count + 2));
+	new_envp = ft_calloc(sizeof(char *), (env_count + 2));
 	if (!new_envp)
 		return ;
 	i = 0;
 	while (i < env_count)
 	{
-		new_envp[i] = pipex->envp[i];
+		new_envp[i] = ft_strdup(pipex->envp[i]);
 		i++;
 	}
-	new_envp[env_count] = str;
-	new_envp[env_count + 1] = NULL;
-	if (pipex->envp2 != NULL)
-		free_map(pipex->envp2);
-	pipex->envp2 = new_envp;
-	pipex->envp = pipex->envp2;
+	new_envp[i] = ft_strdup(str);
+	
+	// if (pipex->envp != NULL)
+	free_map(pipex->envp);
+	pipex->envp = new_envp;
 }

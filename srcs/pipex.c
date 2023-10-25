@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 20:03:11 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 21:33:09 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ void	child_process(t_pipex *pipex, int index)
 	close(pipex->pipefd[1]);
 	close(pipex->pipefd[0]);
 	openfiles(pipex, pipex->cmd_args[index]);
+	if (!pipex->cmd_args[0])
+		return (free_pipex(pipex), free_map(pipex->envp), exit(0));
 	if (check_builtin(pipex->cmd_args[index]) == 1)
-		execute_builtin(pipex->cmd_args[index], pipex);
+		execute_builtin(pipex->cmd_args[index], pipex, 1);
 	tab2 = ft_split(pipex->cmd_args[index], ' ');
 	if (!tab2)
 		return (ft_printf("Function split fail\n"), exit(EXIT_FAILURE));

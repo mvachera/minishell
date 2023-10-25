@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 21:12:30 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 21:33:44 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include "../ft_printf/ft_printf.h"
-# include "../gnl/get_next_line.h"
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -35,7 +34,6 @@ typedef struct s_pipex
 	char	**cmd_paths;
 	char	**cmd_args;
 	char	**envp;
-	char	**envp2;
 	char	*limiteur;
 	char	*file_here_doc;
 	int		cmd_count;
@@ -85,7 +83,7 @@ void		export_command(t_pipex *pipex, char *str);
 void		unset_command(char *var, t_pipex *pipex);
 int			check_unset(char *var, t_pipex *pipex, int len_var);
 void		env_command(t_pipex *pipex);
-void		execute_builtin(char *str, t_pipex *pipex);
+void		execute_builtin(char *str, t_pipex *pipex, int to_free);
 void		execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg);
 char		**get_arg(char *str, t_pipex *pipex, int nb_arg);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
@@ -130,5 +128,7 @@ void		openfiles(t_pipex *pipex, char *cmd);
 void		handle_in_files(t_pipex *pipex, int i);
 void		handle_out_files(t_pipex *pipex, int i);
 void		check_here_doc(t_pipex *pipex);
+void		print_error_syntax(char c, char d, int i);
+int			ft_handle_size(char *tab);
 
 #endif

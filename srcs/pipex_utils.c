@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:41:01 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 19:24:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 20:50:40 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_here_doc(t_pipex *pipex)
 		return (ft_printf("Fail open here_doc\n"), exit(EXIT_FAILURE));
 	while (1)
 	{
-		str = get_next_line(0);
+		str = readline(0);
 		if (!str)
 			break ;
 		if (!ft_strcmp(str, pipex->limiteur))

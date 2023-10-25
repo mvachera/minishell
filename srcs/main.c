@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/23 19:37:36 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 20:56:29 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ int	main(int ac, char **av, char **envp)
 		return (2);
 	if (ac != 1)
 		return (0);
-	pipex.envp = envp;
+	int i;
+	for (i = 0; envp[i]; i++)
+		;
+	pipex.envp = ft_calloc(sizeof(char *), i + 1);
+	for (i = 0; envp[i]; i++)
+		pipex.envp[i] = ft_strdup(envp[i]);
 	while (1)
 	{
 		if (signal(SIGINT, &ft_react_to_signal) == SIG_ERR)
@@ -77,7 +82,7 @@ int	main(int ac, char **av, char **envp)
 			return (pipex.code_err = 130, 130);
 		str = readline("> ");
 		if (!str)
-			exit(1);
+			break ;
 		if (str)
 			add_history(str);
 		if (!*str)
@@ -85,6 +90,5 @@ int	main(int ac, char **av, char **envp)
 		str = tonegatif(str);
 		create_tab(str, &pipex);
 	}
-	if (pipex.envp2 != NULL)
-		free_map(pipex.envp2);
+	free_map(pipex.envp);
 }

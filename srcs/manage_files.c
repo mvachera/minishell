@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 19:02:59 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/25 21:05:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	openfiles(t_pipex *pipex, char *cmd)
 	i = 0;
 	while (pipex->tab[i])
 	{
-		if (ft_strcmp(pipex->tab[i], cmd) == 0)
+		if (!cmd || ft_strcmp(pipex->tab[i], cmd) == 0)
 		{
 			handle_in_files(pipex, i);
 			handle_out_files(pipex, i);
@@ -75,6 +75,7 @@ void	handle_out_files(t_pipex *pipex, int i)
 			{
 				ft_printf("%s : fail to open file\n", pipex->tab[i]);
 				free_pipex(pipex);
+				free_map(pipex->envp);
 				exit(1);
 			}
 			dup2(pipex->fd, 1);
