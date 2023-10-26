@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 20:36:13 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:49:47 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ int	check_random(t_pipex *pipex, int count)
 		return (ft_printf("syntax error near unexpected token `|'\n"), 1);
 	while (pipex->tab[i])
 	{
-		if (pipex->token[i] == RANDOM)
+		if (pipex->token[i] == RANDOM && pipex->quote[i] == NO_QUOTE)
 			return (ft_handle_size(pipex->tab[i]));
 		if (pipex->tab[i + 1] && is_meta_string(pipex->tab[i]) == 1
-			&& is_meta_string(pipex->tab[i + 1]) == 1)
+			&& is_meta_string(pipex->tab[i + 1]) == 1
+			&& pipex->quote[i] == NO_QUOTE)
 		{
 			if (ft_strlen(pipex->tab[i + 1]) == 1)
 				return (print_error_syntax(pipex->tab[i + 1][0], 0, 1), 2);
@@ -34,9 +35,9 @@ int	check_random(t_pipex *pipex, int count)
 		}
 		i++;
 	}
-	(void)count;
-	// if (pipex->token[count - 1] >= 0 && pipex->token[i] <= 4)
-		// return (ft_printf("syntax error near unexpected token `newline'\n"), 1);
+	if (pipex->token[count - 1] >= 0 && pipex->token[count - 1] <= 4
+		&& pipex->quote[count - 1] == NO_QUOTE)
+		return (ft_printf("syntax error near unexpected token `newline'\n"), 1);
 	return (0);
 }
 

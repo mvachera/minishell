@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 21:43:48 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:11:25 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,34 @@ void	free_pipex(t_pipex *pipex)
 		free(pipex->token);
 	if (pipex->cmd_args != NULL)
 		free_map(pipex->cmd_args);
+	if (pipex->envp != NULL)
+		free_map(pipex->envp);
+}
+
+void	free_files(t_pipex *pipex)
+{
+	if (pipex->files != NULL)
+		free_map(pipex->files);
+	if (pipex->type != NULL)
+		free(pipex->type);
+}
+
+char	**cpy_envp(char **envp)
+{
+	char	**dst;
+	int		i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	dst = ft_calloc(sizeof(char *), i + 1);
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		dst[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	return (dst);
 }

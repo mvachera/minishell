@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 20:56:29 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:09:19 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*tonegatif(char *str)
 				str[i] = -str[i];
 				i++;
 			}
-			i++;
 		}
 		i++;
 	}
@@ -68,12 +67,9 @@ int	main(int ac, char **av, char **envp)
 		return (2);
 	if (ac != 1)
 		return (0);
-	int i;
-	for (i = 0; envp[i]; i++)
-		;
-	pipex.envp = ft_calloc(sizeof(char *), i + 1);
-	for (i = 0; envp[i]; i++)
-		pipex.envp[i] = ft_strdup(envp[i]);
+	pipex.envp = cpy_envp(envp);
+	if (!pipex.envp)
+		return (2);
 	while (1)
 	{
 		if (signal(SIGINT, &ft_react_to_signal) == SIG_ERR)

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 21:35:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:04:27 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void	execute_builtin(char *str, t_pipex *pipex, int to_free)
 	if (to_free == 0)
 		free_memory(pipex);
 	else
-		return (free_pipex(pipex), exit(0));
+	{
+		free_pipex(pipex);
+		exit(0);
+	}
 }
 
 void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)

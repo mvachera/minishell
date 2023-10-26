@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 21:46:11 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:06:49 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,36 +51,6 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	return (0);
 }
 
-void	manage_builtin(char *str, t_pipex *pipex)
-{
-	char	**arg;
-	int		nb_arg;
-
-	nb_arg = count_arg(pipex, str);
-	arg = get_arg(str, pipex, nb_arg);
-	if (ft_strcmp(str, "cd") == 0)
-	{
-		if (nb_arg == 0)
-			chdir("/mnt/nfs/homes/mvachera");
-		else if (nb_arg > 1)
-			ft_printf("cd : too many arguments\n");
-		else
-			cd_command(arg[0]);
-	}
-	else if (ft_strcmp(str, "export") == 0)
-	{
-		if (nb_arg == 0)
-			env_command(pipex);
-		else
-			export_command(pipex, arg[0]);
-	}
-	else if (ft_strcmp(str, "unset") == 0 && nb_arg > 0)
-		unset_command(arg[0], pipex);
-	if (nb_arg > 0)
-		free_map(arg);
-	free_memory(pipex);
-}
-
 void	handle_exit(t_pipex *pipex, int i)
 {
 	int	arg;
@@ -106,6 +76,7 @@ void	handle_exit(t_pipex *pipex, int i)
 		i++;
 	}
 	ft_printf("exit\n");
+	free_map(pipex->envp);
 	free_memory(pipex);
 	exit(0);
 }

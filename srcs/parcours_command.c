@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 20:28:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:22:05 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ int	check_arg(char *str, t_pipex *pipex)
 				i++;
 			else
 				return (0);
-			if (pipex->tab[i] != NULL && pipex->token[i] == ARGUMENT)
-				return (1);
-			else
-				return (0);
-			break ;
+			while (pipex->tab[i] != NULL && pipex->token[i] != PIPE)
+			{
+				if (pipex->token[i] == ARGUMENT)
+					return (1);
+				i++;
+			}
+			return (0);
 		}
 		i++;
 	}
@@ -85,6 +87,7 @@ void	parcours_cmd(t_pipex *pipex)
 	c = 0;
 	cmd = NULL;
 	tab_tmp = NULL;
+	parcours_cmd2(pipex);
 	while (pipex->tab[i])
 	{
 		if (pipex->token[i] == COMMAND)
@@ -97,6 +100,34 @@ void	parcours_cmd(t_pipex *pipex)
 			else
 				free(cmd);
 			free_map(tab_tmp);
+		}
+		i++;
+	}
+}
+
+void	parcours_cmd2(t_pipex *pipex)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (pipex->tab[i])
+	{
+		if (pipex->token[i] == COMMAND)
+		{
+			j = i + 1;
+			while (pipex->tab[j])
+			{
+				if (pipex->token[j] == PIPE)
+				{
+					i++;
+					continue ;
+				}
+				else if (pipex->token[j] == COMMAND)
+					pipex->token[j] = ARGUMENT;
+				j++;
+			}
 		}
 		i++;
 	}

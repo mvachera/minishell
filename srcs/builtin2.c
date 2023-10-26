@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 20:45:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:25:24 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void	unset_command(char *var, t_pipex *pipex)
 		return ;
 	while (pipex->envp[len_envp])
 		len_envp++;
-	new_envp = ft_calloc(sizeof(char *), (len_envp + 1));
+	new_envp = ft_calloc(sizeof(char *), len_envp);
 	if (!new_envp)
 		return ;
 	i = 0;
 	j = 0;
-	while (j < len_envp && pipex->envp[i])
+	while (pipex->envp[i])
 	{
 		if (ft_strncmp(pipex->envp[i], var, len_var) == 0
 			&& pipex->envp[i][len_var] == '=')

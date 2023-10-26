@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 21:27:38 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/20 21:37:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:22:39 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*manage_arg(char *str, t_pipex *pipex)
 
 	len = get_len(str, pipex);
 	i = 0;
-	dst = malloc(sizeof(char) * (len + 1));
+	dst = ft_calloc(sizeof(char), (len + 1));
 	if (!dst)
 		return (NULL);
 	while (pipex->tab[i])
@@ -28,16 +28,16 @@ char	*manage_arg(char *str, t_pipex *pipex)
 		if (ft_strcmp(str, pipex->tab[i]) == 0)
 		{
 			ft_strcpy(dst, pipex->tab[i++]);
-			while (pipex->tab[i] && pipex->token[i] == ARGUMENT)
+			while (pipex->tab[i] && pipex->token[i] != PIPE)
 			{
-				ft_strcat(dst, pipex->tab[i]);
+				if (pipex->token[i] == ARGUMENT)
+					ft_strcat(dst, pipex->tab[i]);
 				i++;
 			}
 			break ;
 		}
 		i++;
 	}
-	dst[len] = '\0';
 	return (dst);
 }
 
@@ -54,9 +54,10 @@ int	get_len(char *str, t_pipex *pipex)
 		{
 			count = ft_strlen(str);
 			i++;
-			while (pipex->tab[i] && pipex->token[i] == ARGUMENT)
+			while (pipex->tab[i] && pipex->token[i] != PIPE)
 			{
-				count += ft_strlen(pipex->tab[i]) + 1;
+				if (pipex->token[i] == ARGUMENT)
+					count += ft_strlen(pipex->tab[i]) + 1;
 				i++;
 			}
 			break ;

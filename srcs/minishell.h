@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 21:33:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:55:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -44,7 +45,9 @@ typedef struct s_pipex
 
 	char	**tab;
 	int		*token;
-
+	char	**files;
+	int		*type;
+	int		*quote;
 	int		code_err;
 }			t_pipex;
 
@@ -62,6 +65,8 @@ enum		e_token
 	COMMAND,
 	ARGUMENT,
 	RANDOM,
+	QUOTE,
+	NO_QUOTE,
 };
 
 int			main_pipex(char *str, t_pipex *pipex);
@@ -89,7 +94,6 @@ char		**get_arg(char *str, t_pipex *pipex, int nb_arg);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str);
 int			handle_builtin(t_pipex *pipex, char *str);
-void		manage_builtin(char *str, t_pipex *pipex);
 void		handle_exit(t_pipex *pipex, int i);
 
 char		*tonegatif(char *str);
@@ -101,7 +105,8 @@ void		extract_to_tab(char **tab, char *str, int count);
 void		extract_to_tab2(char *str, int *i, int *j);
 void		letters_arg(char *str, int *j);
 int			stop_str(char *str);
-void		check_quotes(char **tab);
+int			check_quotes(char **tab, t_pipex *pipex, int count);
+int			find_quotes(char *str);
 void		handle_quotes(char *str);
 char		*handle_quotes2(char *str);
 int			check_random(t_pipex *pipex, int count);
@@ -109,11 +114,13 @@ int			check_first_str(char *str);
 int			is_meta_string(char *str);
 int			is_metacaractere(char c);
 char		*cpy(char *str, int i, int j);
-void		sort_token(char **tab, int *token, int i);
+void		sort_token(char **tab, int *token, int i, int *quote);
 void		sort_token2(char **tab, int *token, int i);
 int			check_builtin(char *str);
 void		free_memory(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
+void		free_files(t_pipex *pipex);
+char		**cpy_envp(char **envp);
 int			ft_strcmp(char *s1, char *s2);
 void		free_map(char **map_a_parser);
 char		**get_all_cmd(t_pipex *pipex);
@@ -124,9 +131,9 @@ int			get_len(char *str, t_pipex *pipex);
 char		*ft_strcpy(char *dest, char *src);
 char		*ft_strcat(char *dest, char *src);
 void		parcours_cmd(t_pipex *pipex);
-void		openfiles(t_pipex *pipex, char *cmd);
-void		handle_in_files(t_pipex *pipex, int i);
-void		handle_out_files(t_pipex *pipex, int i);
+void		parcours_cmd2(t_pipex *pipex);
+void		openfiles(t_pipex *pipex);
+void		mallocfichiers(t_pipex *pipex);
 void		check_here_doc(t_pipex *pipex);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);

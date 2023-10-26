@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 20:43:06 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:43:12 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,12 @@ void	export_command(t_pipex *pipex, char *str)
 	if (!new_envp)
 		return ;
 	i = 0;
-	while (i < env_count)
+	while (pipex->envp[i])
 	{
 		new_envp[i] = ft_strdup(pipex->envp[i]);
 		i++;
 	}
 	new_envp[i] = ft_strdup(str);
-	
-	// if (pipex->envp != NULL)
 	free_map(pipex->envp);
 	pipex->envp = new_envp;
 }

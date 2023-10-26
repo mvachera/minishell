@@ -6,29 +6,52 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/24 21:12:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:55:04 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_quotes(char **tab)
+int	check_quotes(char **tab, t_pipex *pipex, int count)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
+	pipex->quote = ft_calloc(sizeof(int), count);
+	if (!pipex->quote)
+		return (-1);
 	while (tab[i])
 	{
-		if (tab[i][0] == '\'' || tab[i][0] == '\"')
+		pipex->quote[i] = NO_QUOTE;
+		if (find_quotes(tab[i]) == 1 || find_quotes(tab[i]) == 1)
 		{
+			pipex->quote[i] = QUOTE;
 			handle_quotes(tab[i]);
-			tmp = handle_quotes2(tab[i]);
-			free(tab[i]);
-			tab[i] = tmp;
+			if (ft_strchr(tab[i], ' ') == NULL)
+			{
+				tmp = handle_quotes2(tab[i]);
+				free(tab[i]);
+				tab[i] = tmp;
+			}
 		}
 		i++;
 	}
+	return (0);
+}
+
+int	find_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	handle_quotes(char *str)
@@ -37,10 +60,17 @@ void	handle_quotes(char *str)
 	int		i;
 
 	i = 0;
-	c = str[i++];
-	while (str[i] && str[i] != c)
+	while (str[i])
 	{
-		str[i] = -str[i];
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			c = str[i++];
+			while (str[i] && str[i] != c)
+			{
+				str[i] = -str[i];
+				i++;
+			}
+		}
 		i++;
 	}
 }
@@ -55,17 +85,16 @@ char	*handle_quotes2(char *str)
 	len = 0;
 	while (str[len + 1])
 		len++;
-	dest = malloc(sizeof(char) * len);
+	dest = ft_calloc(sizeof(char), len);
 	if (!dest)
 		return (NULL);
 	j = 0;
-	i = 1;
-	while (j < len - 1)
+	i = 0;
+	while (str[i] && j < len - 1)
 	{
-		dest[j] = str[i];
-		j++;
-		i++;
+		if (str[i] == '\'' || str[i] == '\"')
+			i++;
+		dest[j++] = str[i++];
 	}
-	dest[j] = '\0';
 	return (dest);
 }

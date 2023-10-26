@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 21:33:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/26 22:02:57 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ void	child_process(t_pipex *pipex, int index)
 		dup2(pipex->pipefd[1], 1);
 	close(pipex->pipefd[1]);
 	close(pipex->pipefd[0]);
-	openfiles(pipex, pipex->cmd_args[index]);
+	pipex->fd = -1;
+	openfiles(pipex);
 	if (!pipex->cmd_args[0])
-		return (free_pipex(pipex), free_map(pipex->envp), exit(0));
+		return (free_pipex(pipex), exit(0));
 	if (check_builtin(pipex->cmd_args[index]) == 1)
 		execute_builtin(pipex->cmd_args[index], pipex, 1);
 	tab2 = ft_split(pipex->cmd_args[index], ' ');
@@ -109,6 +110,7 @@ int	ft_exec(t_pipex *pipex)
 int	main_pipex(char *str, t_pipex *pipex)
 {
 	int	tmp;
+	int	i;
 
 	pipex->here_doc = 0;
 	parcours_cmd(pipex);
@@ -118,6 +120,8 @@ int	main_pipex(char *str, t_pipex *pipex)
 	pipex->cmd_args = get_all_cmd(pipex);
 	if (!pipex->cmd_args)
 		return (free_memory(pipex), 0);
+	for (i = 0; pipex->cmd_args[i]; i++)
+		ft_printf("%s\n", pipex->cmd_args[i]);
 	check_here_doc(pipex);
 	if (pipex->here_doc == 1)
 		ft_here_doc(pipex);
@@ -126,6 +130,7 @@ int	main_pipex(char *str, t_pipex *pipex)
 		close(pipex->pipefd[0]);
 	if (pipex->here_doc == 1)
 		unlink(pipex->file_here_doc);
-	free_pipex(pipex);
+	free_memory(pipex);
+	free_map(pipex->cmd_args);
 	return (1);
 }
