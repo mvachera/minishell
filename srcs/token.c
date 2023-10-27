@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 22:00:57 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:17:36 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	sort_token(char **tab, int *token, int i, int *quote)
 		else if (ft_strcmp(tab[i], ">>") == 0 && quote[i] == NO_QUOTE)
 			token[i] = D_CHEVRON_D;
 		else if (i != 0 && (token[i - 1] == COMMAND || token[i - 1] == ARGUMENT
-				|| token[i -1] == BUILTIN) && is_meta_string(tab[i]) == 0)
+				|| token[i -1] == BUILTIN) && (is_meta_string(tab[i]) == 0
+				|| quote[i] == QUOTE))
 			token[i] = ARGUMENT;
 		else if (check_builtin(tab[i]) == 1)
 			token[i] = BUILTIN;

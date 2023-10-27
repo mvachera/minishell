@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 22:02:57 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:18:36 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ int	ft_exec(t_pipex *pipex)
 int	main_pipex(char *str, t_pipex *pipex)
 {
 	int	tmp;
-	int	i;
 
 	pipex->here_doc = 0;
 	parcours_cmd(pipex);
@@ -120,8 +119,6 @@ int	main_pipex(char *str, t_pipex *pipex)
 	pipex->cmd_args = get_all_cmd(pipex);
 	if (!pipex->cmd_args)
 		return (free_memory(pipex), 0);
-	for (i = 0; pipex->cmd_args[i]; i++)
-		ft_printf("%s\n", pipex->cmd_args[i]);
 	check_here_doc(pipex);
 	if (pipex->here_doc == 1)
 		ft_here_doc(pipex);

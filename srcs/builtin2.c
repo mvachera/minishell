@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 19:25:24 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:18:10 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	unset_command(char *var, t_pipex *pipex)
 		if (ft_strncmp(pipex->envp[i], var, len_var) == 0
 			&& pipex->envp[i][len_var] == '=')
 			i++;
+		if (!pipex->envp[i])
+			break ;
 		new_envp[j++] = ft_strdup(pipex->envp[i++]);
 	}
 	free_map(pipex->envp);
