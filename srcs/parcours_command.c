@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 21:22:05 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:12:52 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,22 +109,22 @@ void	parcours_cmd2(t_pipex *pipex)
 {
 	int	i;
 	int	j;
+	int	tmp;
 
 	i = 0;
 	j = 0;
+	tmp = 0;
 	while (pipex->tab[i])
 	{
-		if (pipex->token[i] == COMMAND)
+		if (pipex->token[i] == COMMAND && pipex->tab[i + 1])
 		{
 			j = i + 1;
+			tmp = i;
 			while (pipex->tab[j])
 			{
 				if (pipex->token[j] == PIPE)
-				{
 					i++;
-					continue ;
-				}
-				else if (pipex->token[j] == COMMAND)
+				else if (pipex->token[j] == COMMAND && i == tmp)
 					pipex->token[j] = ARGUMENT;
 				j++;
 			}
