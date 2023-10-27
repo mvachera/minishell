@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 16:04:27 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:39:07 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,30 +116,29 @@ void	get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg)
 
 int	count_arg(t_pipex *pipex, char *str)
 {
-	int	nb;
-	int	i;
+	int	i[2];
 
-	nb = 0;
-	i = 0;
-	while (pipex->tab[i])
+	i[0] = 0;
+	i[1] = 0;
+	while (pipex->tab[i[0]])
 	{
-		if (ft_strcmp(str, pipex->tab[i]) == 0)
+		if (ft_strcmp(str, pipex->tab[i[0]]) == 0)
 		{
-			if (pipex->tab[i + 1] == NULL)
+			if (pipex->tab[i[0] + 1] == NULL)
 				return (0);
 			else
 			{
-				i++;
-				while (pipex->tab[i])
+				i[0]++;
+				while (pipex->tab[i[0]])
 				{
-					if (pipex->token[i] == ARGUMENT)
-						nb++;
-					i++;
+					if (pipex->token[i[0]] == ARGUMENT)
+						i[1]++;
+					i[0]++;
 				}
 				break ;
 			}
 		}
-		i++;
+		i[0]++;
 	}
-	return (nb);
+	return (i[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 20:11:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:26:49 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ void	free_files(t_pipex *pipex)
 		free_map(pipex->files);
 	if (pipex->type != NULL)
 		free(pipex->type);
+}
+
+void	free_exit(t_pipex *pipex)
+{
+	if (pipex->envp != NULL)
+		free_map(pipex->envp);
+	free_memory(pipex);
 }
 
 char	**cpy_envp(char **envp)

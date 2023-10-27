@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 19:06:49 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:33:15 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,27 @@ int	handle_builtin(t_pipex *pipex, char *str)
 		else if (ft_strcmp(pipex->tab[i], "export") == 0
 			&& pipex->token[i] == BUILTIN)
 			return (execute_builtin("export", pipex, 0), 1);
-		else if (ft_strcmp(pipex->tab[i], "echo") == 0
-			&& pipex->token[i] == BUILTIN)
-			return (execute_builtin("echo", pipex, 0), 1);
-		else if (ft_strcmp(pipex->tab[i], "echo -n") == 0
-			&& pipex->token[i] == BUILTIN)
-			return (execute_builtin("echo -n", pipex, 0), 1);
-		else if (ft_strcmp(pipex->tab[i], "pwd") == 0
-			&& pipex->token[i] == BUILTIN)
-			return (execute_builtin("pwd", pipex, 0), 1);
-		else if (ft_strcmp(pipex->tab[i], "env") == 0
-			&& pipex->token[i] == BUILTIN)
-			return (execute_builtin("env", pipex, 0), 1);
+		else if (handle_builtin2(pipex, i) == 1)
+			return (1);
 		i++;
 	}
+	return (0);
+}
+
+int	handle_builtin2(t_pipex *pipex, int i)
+{
+	if (ft_strcmp(pipex->tab[i], "echo") == 0
+		&& pipex->token[i] == BUILTIN)
+		return (execute_builtin("echo", pipex, 0), 1);
+	else if (ft_strcmp(pipex->tab[i], "echo -n") == 0
+		&& pipex->token[i] == BUILTIN)
+		return (execute_builtin("echo -n", pipex, 0), 1);
+	else if (ft_strcmp(pipex->tab[i], "pwd") == 0
+		&& pipex->token[i] == BUILTIN)
+		return (execute_builtin("pwd", pipex, 0), 1);
+	else if (ft_strcmp(pipex->tab[i], "env") == 0
+		&& pipex->token[i] == BUILTIN)
+		return (execute_builtin("env", pipex, 0), 1);
 	return (0);
 }
 
@@ -61,22 +68,20 @@ void	handle_exit(t_pipex *pipex, int i)
 		if (pipex->token[i] == ARGUMENT && arg == 0)
 		{
 			arg = 1;
-			ft_printf("exit : %s : numeric argument required\n",
-				pipex->tab[i]);
+			ft_printf("exit : %s : numeric argument required\n", pipex->tab[i]);
 		}
 		else if (pipex->token[i] == OUT_FILES)
 		{
 			pipex->fd = open(pipex->tab[i], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			if (pipex->fd == -1)
 				return (ft_printf("Fail open out_name file\n"),
-					close(pipex->pipefd[1]),
-					close(pipex->pipefd[0]), exit(EXIT_FAILURE));
+					close(pipex->pipefd[1]), close(pipex->pipefd[0]),
+					exit(EXIT_FAILURE));
 			close(pipex->fd);
 		}
 		i++;
 	}
 	ft_printf("exit\n");
-	free_map(pipex->envp);
-	free_memory(pipex);
+	free_exit(pipex);
 	exit(0);
 }

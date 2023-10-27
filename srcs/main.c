@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 20:09:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:15:31 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ void	ft_interrupt(int sig)
 	}
 }
 
+int	start_main(int ac, t_pipex *pipex, char **envp)
+{
+	if (ac != 1)
+		return (2);
+	pipex->envp = cpy_envp(envp);
+	if (!pipex->envp)
+		return (2);
+	return (0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	static t_pipex	pipex = {0};
@@ -65,10 +75,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (2);
-	if (ac != 1)
-		return (0);
-	pipex.envp = cpy_envp(envp);
-	if (!pipex.envp)
+	if (start_main(ac, &pipex, envp) == 2)
 		return (2);
 	while (1)
 	{

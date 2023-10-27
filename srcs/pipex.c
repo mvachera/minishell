@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 14:18:36 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:15:47 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	child_process(t_pipex *pipex, int index)
 	close(pipex->pipefd[1]);
 	close(pipex->pipefd[0]);
 	pipex->fd = -1;
-	openfiles(pipex);
+	openfiles(pipex, index);
 	if (!pipex->cmd_args[0])
 		return (free_pipex(pipex), exit(0));
 	if (check_builtin(pipex->cmd_args[index]) == 1)

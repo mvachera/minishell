@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 21:55:30 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:15:04 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ char		**get_arg(char *str, t_pipex *pipex, int nb_arg);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str);
 int			handle_builtin(t_pipex *pipex, char *str);
+int			handle_builtin2(t_pipex *pipex, int i);
 void		handle_exit(t_pipex *pipex, int i);
 
+int			start_main(int ac, t_pipex *pipex, char **envp);
 char		*tonegatif(char *str);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);
@@ -120,6 +122,7 @@ int			check_builtin(char *str);
 void		free_memory(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		free_files(t_pipex *pipex);
+void		free_exit(t_pipex *pipex);
 char		**cpy_envp(char **envp);
 int			ft_strcmp(char *s1, char *s2);
 void		free_map(char **map_a_parser);
@@ -132,7 +135,8 @@ char		*ft_strcpy(char *dest, char *src);
 char		*ft_strcat(char *dest, char *src);
 void		parcours_cmd(t_pipex *pipex);
 void		parcours_cmd2(t_pipex *pipex);
-void		openfiles(t_pipex *pipex);
+void		openfiles(t_pipex *pipex, int i);
+void		openfiles2(t_pipex *pipex, int i);
 void		mallocfichiers(t_pipex *pipex);
 void		check_here_doc(t_pipex *pipex);
 void		print_error_syntax(char c, char d, int i);

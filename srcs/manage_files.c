@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 20:44:20 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:51:18 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ void	check_here_doc(t_pipex *pipex)
 	}
 }
 
-void	openfiles(t_pipex *pipex)
+void	openfiles(t_pipex *pipex, int i)
 {
-	int	i;
-
 	i = 0;
 	mallocfichiers(pipex);
 	while (pipex->files[i])
@@ -57,14 +55,19 @@ void	openfiles(t_pipex *pipex)
 			free_pipex(pipex);
 			exit(1);
 		}
-		if (pipex->type[i] == CHEVRON_G || pipex->type[i] == D_CHEVRON_G)
-			dup2(pipex->fd, 0);
-		else
-			dup2(pipex->fd, 1);
+		openfiles2(pipex, i);
 		close(pipex->fd);
 		i++;
 	}
 	free_files(pipex);
+}
+
+void	openfiles2(t_pipex *pipex, int i)
+{
+	if (pipex->type[i] == CHEVRON_G || pipex->type[i] == D_CHEVRON_G)
+		dup2(pipex->fd, 0);
+	else
+		dup2(pipex->fd, 1);
 }
 
 void	mallocfichiers(t_pipex *pipex)
