@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:12:52 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:33:57 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**get_all_cmd(t_pipex *pipex)
 
 	i[0] = 0;
 	i[1] = 0;
-	all_cmd = malloc(sizeof(char *) * (nb_cmd(pipex) + 1));
+	all_cmd = ft_calloc(sizeof(char *), (nb_cmd(pipex) + 1));
 	if (!all_cmd)
 		return (NULL);
 	while (pipex->tab[i[0]])

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 14:51:18 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:28:24 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	openfiles(t_pipex *pipex, int i)
 		if (pipex->fd == -1)
 		{
 			ft_printf("%s : fail to open file\n", pipex->files[i]);
+			free_files(pipex);
 			free_pipex(pipex);
 			exit(1);
 		}

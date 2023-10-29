@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:05:11 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:49:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_builtin(t_pipex *pipex, char *str)
 
 	i = 0;
 	nb_cmd = ft_count(str, '|');
-	if (nb_cmd != 1)
+	if (nb_cmd != 1 || is_builtin(pipex) == 0)
 		return (0);
 	while (pipex->tab[i])
 	{
@@ -55,6 +55,20 @@ int	handle_builtin2(t_pipex *pipex, int i)
 	else if (ft_strcmp(pipex->tab[i], "env") == 0
 		&& pipex->token[i] == BUILTIN)
 		return (execute_builtin("env", pipex, 0), 1);
+	return (0);
+}
+
+int	is_builtin(t_pipex *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->tab[i])
+	{
+		if (pipex->token[i] == BUILTIN)
+			return (1);
+		i++;
+	}
 	return (0);
 }
 

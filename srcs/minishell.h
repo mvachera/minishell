@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 15:15:04 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:18:09 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ enum		e_token
 	RANDOM,
 	QUOTE,
 	NO_QUOTE,
+	EMPTY,
 };
 
 int			main_pipex(char *str, t_pipex *pipex);
@@ -95,13 +96,14 @@ void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str);
 int			handle_builtin(t_pipex *pipex, char *str);
 int			handle_builtin2(t_pipex *pipex, int i);
+int			is_builtin(t_pipex *pipex);
 void		handle_exit(t_pipex *pipex, int i);
 
 int			start_main(int ac, t_pipex *pipex, char **envp);
 char		*tonegatif(char *str);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);
-void		create_tab(char *str, t_pipex *pipex);
+void		create_tab(char *str, t_pipex *pipex, int count);
 void		count_nb_tab(char *str, int *count);
 void		extract_to_tab(char **tab, char *str, int count);
 void		extract_to_tab2(char *str, int *i, int *j);
@@ -139,6 +141,14 @@ void		openfiles(t_pipex *pipex, int i);
 void		openfiles2(t_pipex *pipex, int i);
 void		mallocfichiers(t_pipex *pipex);
 void		check_here_doc(t_pipex *pipex);
+void		manage_dollars(t_pipex *pipex);
+char		*manage_dollars2(t_pipex *pipex, int i);
+void		manage_dollars3(t_pipex *pipex, char *tmp, char *tmp_before, int i);
+char		*new_var(t_pipex *pipex, char *var);
+void		new_tab(t_pipex *pipex, char **dst_tab, char **all_var);
+char		*handle_array_dollar(char **dst_tab);
+int			get_nb_var(t_pipex *pipex, char **all_var);
+int			is_dollars(char *str);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
 

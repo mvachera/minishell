@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 21:55:04 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:32:19 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ void	handle_quotes(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			c = str[i++];
+			if (str[i + 1])
+				c = str[i++];
+			else
+				break ;
 			while (str[i] && str[i] != c)
 			{
 				str[i] = -str[i];

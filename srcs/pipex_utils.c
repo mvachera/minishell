@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:41:01 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:02:55 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/28 20:05:29 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*str_johnny(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	dst = ft_calloc(sizeof(char), (len + 1));
+	dst = ft_calloc(sizeof(char), (len + 2));
 	if (!dst)
 		return (NULL);
 	while (s1[i])
@@ -77,7 +77,6 @@ char	*str_johnny(char *s1, char *s2)
 		i++;
 		j++;
 	}
-	dst[i] = '\0';
 	return (dst);
 }
 

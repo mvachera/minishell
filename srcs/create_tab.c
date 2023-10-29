@@ -6,22 +6,20 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:05:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:49:09 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	create_tab(char *str, t_pipex *pipex)
+void	create_tab(char *str, t_pipex *pipex, int count)
 {
-	int	count;
-
 	if (signal(SIGINT, &ft_interrupt) == 0)
 		return ;
 	count_nb_tab(str, &count);
 	if (count == 0)
 		return ;
-	pipex->tab = malloc(sizeof(char *) * (count + 1));
+	pipex->tab = ft_calloc(sizeof(char *), (count + 1));
 	if (!pipex->tab)
 		return ;
 	extract_to_tab(pipex->tab, str, count);
@@ -29,13 +27,15 @@ void	create_tab(char *str, t_pipex *pipex)
 		return ;
 	if (check_quotes(pipex->tab, pipex, count) != 0)
 		return ;
-	pipex->token = malloc(sizeof(int) * count);
+	pipex->token = ft_calloc(sizeof(int), count);
 	if (!pipex->token)
 		return (free_map(pipex->tab));
 	sort_token(pipex->tab, pipex->token, 0, pipex->quote);
 	if (check_random(pipex, count) != 0)
-		return (free_memory(pipex));
+		return (free(pipex->quote), free_memory(pipex));
 	free(pipex->quote);
+	if (is_dollars(str) == 1)
+		manage_dollars(pipex);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
 }

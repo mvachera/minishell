@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 15:15:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:51:20 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ char	*tonegatif(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			c = str[i++];
+			if (str[i + 1])
+				c = str[i++];
+			else
+				break ;
 			while (str[i] && str[i] != c)
 			{
 				str[i] = -str[i];
@@ -91,7 +94,7 @@ int	main(int ac, char **av, char **envp)
 		if (!*str)
 			continue ;
 		str = tonegatif(str);
-		create_tab(str, &pipex);
+		create_tab(str, &pipex, 0);
 	}
 	free_map(pipex.envp);
 }
