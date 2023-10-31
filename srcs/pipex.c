@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:07:41 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:05:15 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,11 @@ int	main_pipex(char *str, t_pipex *pipex)
 	parcours_cmd(pipex);
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count >= 1024)
-		return (ft_printf("Pipex: too many commands\n"), free_memory(pipex), 0);
+		return (pipex->code_err = 127, ft_printf("Pipex: too many commands\n"),
+			free_memory(pipex), 127);
 	pipex->cmd_args = get_all_cmd(pipex);
 	if (!pipex->cmd_args)
-		return (free_memory(pipex), 0);
+		return (pipex->code_err = 127, free_memory(pipex), 127);
 	check_here_doc(pipex);
 	if (pipex->here_doc == 1)
 		ft_here_doc(pipex);
@@ -129,5 +130,5 @@ int	main_pipex(char *str, t_pipex *pipex)
 		unlink(pipex->file_here_doc);
 	free_memory(pipex);
 	free_map(pipex->cmd_args);
-	return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 20:49:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:12:57 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	create_tab(char *str, t_pipex *pipex, int count)
 {
 	if (signal(SIGINT, &ft_interrupt) == 0)
+	{
+		pipex->code_err = 255;
 		return ;
+	}
 	count_nb_tab(str, &count);
 	if (count == 0)
 		return ;
@@ -34,7 +37,7 @@ void	create_tab(char *str, t_pipex *pipex, int count)
 	if (check_random(pipex, count) != 0)
 		return (free(pipex->quote), free_memory(pipex));
 	free(pipex->quote);
-	if (is_dollars(str) == 1)
+	if (pipex->is_dollars == 1)
 		manage_dollars(pipex);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);

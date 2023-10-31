@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/29 20:18:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:20:25 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_pipex
 	char	**files;
 	int		*type;
 	int		*quote;
+	int		is_dollars;
 	int		code_err;
 }			t_pipex;
 
@@ -100,7 +101,8 @@ int			is_builtin(t_pipex *pipex);
 void		handle_exit(t_pipex *pipex, int i);
 
 int			start_main(int ac, t_pipex *pipex, char **envp);
-char		*tonegatif(char *str);
+int			nb_quotes(char *str);
+char		*tonegatif(t_pipex *pipex, char *str);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);
 void		create_tab(char *str, t_pipex *pipex, int count);
@@ -151,5 +153,6 @@ int			get_nb_var(t_pipex *pipex, char **all_var);
 int			is_dollars(char *str);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
+int			ft_strlen2(char *str);
 
 #endif

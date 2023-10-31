@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:28:55 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/29 20:28:24 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:25:16 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	new_tab(t_pipex *pipex, char **dst_tab, char **all_var)
 	while (all_var[i])
 	{
 		j = 0;
-		len_var = ft_strlen(all_var[i]);
+		len_var = ft_strlen2(all_var[i]);
 		while (pipex->envp[j])
 		{
 			if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
@@ -104,7 +104,7 @@ int	get_nb_var(t_pipex *pipex, char **all_var)
 	count = 0;
 	while (all_var[i])
 	{
-		len_var = ft_strlen(all_var[i]);
+		len_var = ft_strlen2(all_var[i]);
 		j = 0;
 		while (pipex->envp[j])
 		{

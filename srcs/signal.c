@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 13:18:17 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 20:15:43 by mvachera         ###   ########.fr       */
+/*   Created: 2023/10/31 15:18:33 by mvachera          #+#    #+#             */
+/*   Updated: 2023/10/31 15:19:20 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_react_to_signal(int sig)
 {
-	size_t	i;
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		return ;
+	}
+}
 
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+void	ft_interrupt(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 1);
+		rl_redisplay();
+		return ;
+	}
 }

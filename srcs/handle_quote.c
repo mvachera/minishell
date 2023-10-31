@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:32:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:46:54 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@ int	check_quotes(char **tab, t_pipex *pipex, int count)
 		{
 			pipex->quote[i] = QUOTE;
 			handle_quotes(tab[i]);
-			if (ft_strchr(tab[i], ' ') == NULL)
-			{
-				tmp = handle_quotes2(tab[i]);
-				free(tab[i]);
-				tab[i] = tmp;
-			}
+			tmp = handle_quotes2(tab[i]);
+			free(tab[i]);
+			tab[i] = tmp;
 		}
 		i++;
 	}

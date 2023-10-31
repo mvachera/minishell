@@ -6,7 +6,7 @@
 #    By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/02 07:38:17 by mvachera          #+#    #+#              #
-#    Updated: 2023/10/29 19:30:01 by mvachera         ###   ########.fr        #
+#    Updated: 2023/10/31 15:21:18 by mvachera         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ PRINTF          = ft_printf
 
 FT_PRINTF       = ft_printf/libftprintf.a
 
-SRC     = srcs/main.c srcs/builtin1.c srcs/builtin2.c srcs/create_tab.c srcs/exec_builtin.c srcs/free_functions.c srcs/handle_quote.c srcs/parcours_command.c srcs/pipex.c srcs/pipex_utils.c srcs/tab_utils.c srcs/token.c srcs/manage_one_builtin.c srcs/manage_files.c srcs/manage_arg.c srcs/error_msg.c srcs/dollars.c srcs/dollars_utils.c
+SRC     = srcs/main.c srcs/builtin1.c srcs/builtin2.c srcs/create_tab.c srcs/exec_builtin.c srcs/free_functions.c srcs/handle_quote.c srcs/parcours_command.c srcs/pipex.c srcs/pipex_utils.c srcs/tab_utils.c srcs/token.c srcs/manage_one_builtin.c srcs/manage_files.c srcs/manage_arg.c srcs/error_msg.c srcs/dollars.c srcs/dollars_utils.c srcs/signal.c srcs/start_fc.c
 
 OBJ     = ${SRC:.c=.o}
 

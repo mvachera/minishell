@@ -6,69 +6,11 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 20:51:20 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:51:00 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*tonegatif(char *str)
-{
-	char	c;
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			if (str[i + 1])
-				c = str[i++];
-			else
-				break ;
-			while (str[i] && str[i] != c)
-			{
-				str[i] = -str[i];
-				i++;
-			}
-		}
-		i++;
-	}
-	return (str);
-}
-
-void	ft_react_to_signal(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
-		return ;
-	}
-}
-
-void	ft_interrupt(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 1);
-		rl_redisplay();
-		return ;
-	}
-}
-
-int	start_main(int ac, t_pipex *pipex, char **envp)
-{
-	if (ac != 1)
-		return (2);
-	pipex->envp = cpy_envp(envp);
-	if (!pipex->envp)
-		return (2);
-	return (0);
-}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -76,8 +18,6 @@ int	main(int ac, char **av, char **envp)
 	char			*str;
 
 	(void)av;
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-		return (2);
 	if (start_main(ac, &pipex, envp) == 2)
 		return (2);
 	while (1)
@@ -93,8 +33,11 @@ int	main(int ac, char **av, char **envp)
 			add_history(str);
 		if (!*str)
 			continue ;
-		str = tonegatif(str);
-		create_tab(str, &pipex, 0);
+		if (nb_quotes(str) == 0)
+		{
+			str = tonegatif(&pipex, str);
+			create_tab(str, &pipex, 0);
+		}
 	}
 	free_map(pipex.envp);
 }
