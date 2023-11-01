@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:28:55 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 20:25:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:41:56 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 char	*new_var(t_pipex *pipex, char *var)
 {
 	int		i;
+	int		d;
 	char	**dst_tab;
 	char	*dst;
 	char	**all_var;
 
+	d = 0;
+	if (var[ft_strlen(var) - 1] == '$')
+		d = 1;
 	all_var = ft_split(var, '$');
 	if (!all_var)
 		return (NULL);
-	i = get_nb_var(pipex, all_var);
+	i = get_nb_var(pipex, all_var, d);
 	if (i == 0)
 		return (free_map(all_var), NULL);
 	dst_tab = ft_calloc(sizeof(char *), i + 1);
@@ -30,7 +34,7 @@ char	*new_var(t_pipex *pipex, char *var)
 		return (free_map(all_var), NULL);
 	new_tab(pipex, dst_tab, all_var);
 	free_map(all_var);
-	dst = handle_array_dollar(dst_tab);
+	dst = handle_array_dollar(dst_tab, d);
 	if (!dst)
 		return (free_map(dst_tab), NULL);
 	free_map(dst_tab);
@@ -50,72 +54,78 @@ void	new_tab(t_pipex *pipex, char **dst_tab, char **all_var)
 	{
 		j = 0;
 		len_var = ft_strlen2(all_var[i]);
-		while (pipex->envp[j])
+		if (is_interrogation(all_var[i]) == 1)
+			dst_tab[k++] = handle_interrogation(pipex, all_var[i]);
+		else
 		{
-			if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
-				&& pipex->envp[j][len_var] == '=')
+			while (pipex->envp[j])
 			{
-				dst_tab[k] = ft_strdup(pipex->envp[j] + len_var + 1);
-				k++;
+				if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
+					&& pipex->envp[j][len_var] == '=')
+					dst_tab[k++] = ft_strdup(pipex->envp[j] + len_var + 1);
+				j++;
 			}
-			j++;
 		}
 		i++;
 	}
 }
 
-char	*handle_array_dollar(char **dst_tab)
+char	*handle_array_dollar(char **dst_tab, int d)
 {
 	char	*dst;
-	int		len;
-	int		i;
-	int		j;
+	int		i[3];
 
-	len = 0;
-	i = 0;
-	while (dst_tab[i])
+	i[2] = 0;
+	i[0] = 0;
+	while (dst_tab[i[0]])
 	{
-		len += ft_strlen(dst_tab[i]);
-		i++;
+		i[2] += ft_strlen(dst_tab[i[0]]);
+		i[0]++;
 	}
-	dst = ft_calloc(sizeof(char), len + 1);
+	dst = ft_calloc(sizeof(char), i[2] + 2);
 	if (!dst)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (dst_tab[i])
+	i[0] = 0;
+	i[1] = 0;
+	while (dst_tab[i[0]])
 	{
-		len = 0;
-		while (dst_tab[i][len])
-			dst[j++] = dst_tab[i][len++];
-		i++;
+		i[2] = 0;
+		while (dst_tab[i[0]][i[2]])
+			dst[i[1]++] = dst_tab[i[0]][i[2]++];
+		i[0]++;
 	}
+	if (d == 1)
+		dst[i[1]] = '$';
 	return (dst);
 }
 
-int	get_nb_var(t_pipex *pipex, char **all_var)
+int	get_nb_var(t_pipex *pipex, char **all_var, int d)
 {
-	int	i;
-	int	j;
-	int	count;
-	int	len_var;
+	int	i[4];
 
-	i = 0;
-	count = 0;
-	while (all_var[i])
+	i[0] = 0;
+	i[2] = 0;
+	if (d == 1)
+		i[2]++;
+	while (all_var[i[0]])
 	{
-		len_var = ft_strlen2(all_var[i]);
-		j = 0;
-		while (pipex->envp[j])
+		i[3] = ft_strlen2(all_var[i[0]]);
+		i[1] = 0;
+		if (is_interrogation(all_var[i[0]]) == 1)
+			i[2]++;
+		else
 		{
-			if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
-				&& pipex->envp[j][len_var] == '=')
-				count++;
-			j++;
+			while (pipex->envp[i[1]])
+			{
+				if (ft_strncmp(pipex->envp[i[1]], all_var[i[0]], i[3]) == 0
+					&& pipex->envp[i[1]][i[3]] == '=')
+					i[2]++;
+				i[1]++;
+			}
 		}
-		i++;
+		i[0]++;
 	}
-	return (count);
+	return (i[2]);
 }
 
 int	is_dollars(char *str)

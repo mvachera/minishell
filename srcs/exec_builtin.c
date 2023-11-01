@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 20:33:30 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:31:54 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,19 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 {
 	if (ft_strcmp(str, "cd") == 0)
 	{
+		if (last_command(pipex, str) == 1 && nb_arg > 1)
+			pipex->code_err = 1;
 		if (nb_arg == 0)
 			chdir("/mnt/nfs/homes/mvachera");
 		else if (nb_arg > 1)
 			ft_printf("cd : too many arguments\n");
 		else
-			cd_command(arg[0]);
+			cd_command(pipex, arg[0]);
 	}
 	else if (ft_strcmp(str, "env") == 0)
 	{
+		if (last_command(pipex, str) == 1 && nb_arg != 0)
+			pipex->code_err = 127;
 		if (nb_arg == 0)
 			env_command(pipex);
 		else

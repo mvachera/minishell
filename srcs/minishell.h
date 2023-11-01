@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 20:20:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:32:09 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int			nb_cmd(t_pipex *pipex);
 
 void		echo_command(char **arg, int choice, int nb_arg);
 void		cd_utils(char *path);
-void		cd_command(char *path);
+void		cd_command(t_pipex *pipex, char *path);
 void		pwd_command(void);
 void		export_command(t_pipex *pipex, char *str);
 void		unset_command(char *var, t_pipex *pipex);
@@ -148,9 +148,12 @@ char		*manage_dollars2(t_pipex *pipex, int i);
 void		manage_dollars3(t_pipex *pipex, char *tmp, char *tmp_before, int i);
 char		*new_var(t_pipex *pipex, char *var);
 void		new_tab(t_pipex *pipex, char **dst_tab, char **all_var);
-char		*handle_array_dollar(char **dst_tab);
-int			get_nb_var(t_pipex *pipex, char **all_var);
+char		*handle_array_dollar(char **dst_tab, int d);
+int			get_nb_var(t_pipex *pipex, char **all_var, int d);
 int			is_dollars(char *str);
+char		*handle_interrogation(t_pipex *pipex, char *str);
+int			last_command(t_pipex *pipex, char *str);
+int			is_interrogation(char *str);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
 int			ft_strlen2(char *str);

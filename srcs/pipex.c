@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 20:05:15 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:03:46 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,13 @@ int	main_pipex(char *str, t_pipex *pipex)
 {
 	int	tmp;
 
+	pipex->code_err = 0;
 	pipex->here_doc = 0;
-	parcours_cmd(pipex);
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count >= 1024)
 		return (pipex->code_err = 127, ft_printf("Pipex: too many commands\n"),
 			free_memory(pipex), 127);
+	parcours_cmd(pipex);
 	pipex->cmd_args = get_all_cmd(pipex);
 	if (!pipex->cmd_args)
 		return (pipex->code_err = 127, free_memory(pipex), 127);

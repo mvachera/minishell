@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 16:49:08 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:46:36 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 int	handle_builtin(t_pipex *pipex, char *str)
 {
 	int	i;
-	int	nb_cmd;
 
 	i = 0;
-	nb_cmd = ft_count(str, '|');
-	if (nb_cmd != 1 || is_builtin(pipex) == 0)
+	pipex->cmd_count = ft_count(str, '|');
+	if (pipex->cmd_count != 1 || is_builtin(pipex) == 0)
 		return (0);
 	while (pipex->tab[i])
 	{
@@ -77,11 +76,13 @@ void	handle_exit(t_pipex *pipex, int i)
 	int	arg;
 
 	arg = 0;
+	ft_printf("exit\n");
 	while (pipex->tab[i])
 	{
 		if (pipex->token[i] == ARGUMENT && arg == 0)
 		{
 			arg = 1;
+			pipex->code_err = 2;
 			ft_printf("exit : %s : numeric argument required\n", pipex->tab[i]);
 		}
 		else if (pipex->token[i] == OUT_FILES)
@@ -95,7 +96,6 @@ void	handle_exit(t_pipex *pipex, int i)
 		}
 		i++;
 	}
-	ft_printf("exit\n");
 	free_exit(pipex);
 	exit(0);
 }

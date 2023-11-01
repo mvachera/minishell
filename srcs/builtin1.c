@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 20:15:32 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:31:44 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	echo_command(char **arg, int choice, int nb_arg)
 		printf("\n");
 }
 
-void	cd_command(char *path)
+void	cd_command(t_pipex *pipex, char *path)
 {
 	char	cwd[1024];
 	char	*cwd2;
@@ -42,7 +42,10 @@ void	cd_command(char *path)
 	if (path[0] == '/')
 	{
 		if (chdir(path) == -1)
+		{
+			pipex->code_err = 1;
 			ft_printf("cd : no such file or directory : %s\n", path);
+		}
 		return ;
 	}
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
@@ -54,7 +57,10 @@ void	cd_command(char *path)
 	if (!absolu)
 		return (free(cwd2));
 	if (chdir(absolu) != 0)
+	{
+		pipex->code_err = 1;
 		ft_printf("cd : no such file or directory : %s\n", path);
+	}
 	free(cwd2);
 	free(absolu);
 }
