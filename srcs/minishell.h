@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:32:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:53:19 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ typedef struct s_pipex
 	int		is_dollars;
 	int		code_err;
 }			t_pipex;
+
+
+
 
 enum		e_token
 {

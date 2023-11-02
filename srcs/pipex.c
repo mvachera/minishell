@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:03:46 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:18:47 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ char	*get_cmd(char **tab2, t_pipex *pipex)
 	}
 	tab = find_path(pipex->envp);
 	if (!tab)
-		return (ft_printf("Function find path fail\n"),
-			exit(EXIT_FAILURE), NULL);
-	while (tab[j] && tab)
+		return (ft_printf("Function find path fail\n"), NULL);
+	while (tab && tab[j])
 	{
 		pathcmd = ft_strjoin(tab[j], tab2[0]);
 		if (access(pathcmd, F_OK | X_OK) != -1)
@@ -49,7 +48,7 @@ void	execute(t_pipex *pipex, char *command, char **tab)
 	}
 	free_pipex(pipex);
 	free_map(tab);
-	return (exit(EXIT_FAILURE));
+	return (exit(pipex->code_err = 127));
 }
 
 void	child_process(t_pipex *pipex, int index)
@@ -58,7 +57,10 @@ void	child_process(t_pipex *pipex, int index)
 	char	*cmd;
 
 	if (index != 0)
+	{
 		dup2(pipex->prev, 0);
+		close(pipex->prev);
+	}
 	if (index != pipex->cmd_count - 1)
 		dup2(pipex->pipefd[1], 1);
 	close(pipex->pipefd[1]);
@@ -82,7 +84,7 @@ void	child_process(t_pipex *pipex, int index)
 int	ft_exec(t_pipex *pipex)
 {
 	int	i;
-
+	static int var;
 	i = 0;
 	while (i < pipex->cmd_count)
 	{
@@ -102,8 +104,16 @@ int	ft_exec(t_pipex *pipex)
 		i++;
 	}
 	i = 0;
+	close(pipex->pipefd[0]);
 	while (i < pipex->cmd_count)
-		waitpid(pipex->pid[i++], NULL, 0);
+	{
+		waitpid(pipex->pid[i++], &pipex->code_err, 0);
+		if (WIFEXITED(pipex->code_err))
+			pipex->code_err = WEXITSTATUS(pipex->code_err);
+		if (pipex->code_err == 131 && !var++)
+			ft_printf("Quit (core dumped)\n");
+
+	}
 	return (1);
 }
 

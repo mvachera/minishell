@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:46:36 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:54:17 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,16 @@ void	handle_exit(t_pipex *pipex, int i)
 	ft_printf("exit\n");
 	while (pipex->tab[i])
 	{
+		ft_printf("{%s}\n", pipex->tab[i]);
+		ft_printf("[{%d}]\n", pipex->token[i]);
 		if (pipex->token[i] == ARGUMENT && arg == 0)
 		{
 			arg = 1;
 			pipex->code_err = 2;
 			ft_printf("exit : %s : numeric argument required\n", pipex->tab[i]);
 		}
-		else if (pipex->token[i] == OUT_FILES)
-		{
-			pipex->fd = open(pipex->tab[i], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			if (pipex->fd == -1)
-				return (ft_printf("Fail open out_name file\n"),
-					close(pipex->pipefd[1]), close(pipex->pipefd[0]),
-					exit(EXIT_FAILURE));
-			close(pipex->fd);
-		}
 		i++;
 	}
 	free_exit(pipex);
-	exit(0);
+	exit(pipex->code_err);
 }

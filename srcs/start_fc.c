@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:20:53 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 19:50:09 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:32:40 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,26 @@
 int	nb_quotes(char *str)
 {
 	int	i;
-	int	single;
-	int	doubles;
+	char tmp;
 	int	count;
 
 	i = 0;
-	single = 0;
-	doubles = 0;
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'')
-			single++;
-		if (str[i] == '\"')
-			doubles++;
 		if (str[i] == '\'' || str[i] == '\"')
+		{
+			tmp = str[i++];
 			count++;
+			while (str[i] && str[i] != tmp)
+				i++;
+			if (!str[i])
+				return (ft_printf("syntax error, unclosed quotes\n"), 1);
+		}
+		count--;
 		i++;
 	}
-	if (count % 2 == 1 || single % 2 == 1 || doubles % 2 == 1)
+	if (count % 2 == 1)
 		return (ft_printf("syntax error, unclosed quotes\n"), 1);
 	return (0);
 }

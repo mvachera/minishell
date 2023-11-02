@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:31:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:46:40 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ void	export_command(t_pipex *pipex, char *str)
 	int		i;
 
 	if (ft_strchr(str, '=') == NULL)
+	{
+		pipex->code_err = 1;
 		return ;
+	}
 	env_count = 0;
 	while (pipex->envp[env_count] != NULL)
 		env_count++;

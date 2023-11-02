@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:31:54 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:39:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 	{
 		if (last_command(pipex, str) == 1 && nb_arg != 0)
 			pipex->code_err = 127;
+		// ft_printf(">>>>>>%i\n", nb_arg);
 		if (nb_arg == 0)
 			env_command(pipex);
 		else

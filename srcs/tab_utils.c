@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 20:19:00 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:00:19 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ int	check_random(t_pipex *pipex, int count)
 			&& pipex->quote[i] == NO_QUOTE)
 		{
 			if (ft_strlen(pipex->tab[i + 1]) == 1)
+			{
+				// printf("{%s}[%s]\n", pipex->tab[i], pipex->tab[i + 1]); ici la faux
+				// > a | > b syntax error alors que normalement non
 				return (print_error_syntax(pipex->tab[i + 1][0], 0, 1), 2);
+			}
 			else
 				return (print_error_syntax(pipex->tab[i + 1][0],
 					pipex->tab[i + 1][1], 2), 2);
