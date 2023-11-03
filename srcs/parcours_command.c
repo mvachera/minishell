@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 19:37:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:15:46 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@ char	**get_all_cmd(t_pipex *pipex)
 
 	i[0] = 0;
 	i[1] = 0;
-	all_cmd = ft_calloc(sizeof(char *), (nb_cmd(pipex) + 1));
+	all_cmd = ft_calloc(sizeof(char *), (pipex->cmd_count + 1));
 	if (!all_cmd)
 		return (NULL);
 	while (pipex->tab[i[0]])
 	{
+		if (pipex->token[i[0]] == PIPE)
+			i[1]++;
 		if (pipex->token[i[0]] == COMMAND || pipex->token[i[0]] == BUILTIN)
 		{
 			get_all_cmd2(pipex, i, all_cmd);
 			if (!all_cmd[i[1]])
 			{
 				while (i[1] >= 0)
-					free(all_cmd[--i[1]]);
+					free(all_cmd[i[1]--]);
 				return (free(all_cmd), NULL);
 			}
-			i[1]++;
 		}
 		i[0]++;
 	}
-	all_cmd[i[1]] = 0;
 	return (all_cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/31 16:46:54 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:20:25 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@ int	check_quotes(char **tab, t_pipex *pipex, int count)
 	while (tab[i])
 	{
 		pipex->quote[i] = NO_QUOTE;
-		if (find_quotes(tab[i]) == 1 || find_quotes(tab[i]) == 1)
+		if (find_quotes(tab[i]) != 0)
 		{
-			pipex->quote[i] = QUOTE;
+			if (find_quotes(tab[i]) == 1)
+				pipex->quote[i] = SINGLE_QUOTE;
+			else if (find_quotes(tab[i]) == 2)
+				pipex->quote[i] = DOUBLE_QUOTES;
 			handle_quotes(tab[i]);
 			tmp = handle_quotes2(tab[i]);
 			free(tab[i]);
@@ -44,8 +47,10 @@ int	find_quotes(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i] == '\'')
 			return (1);
+		if (str[i] == '\"')
+			return (2);
 		i++;
 	}
 	return (0);
@@ -78,6 +83,7 @@ void	handle_quotes(char *str)
 char	*handle_quotes2(char *str)
 {
 	char	*dest;
+	char	c;
 	int		len;
 	int		i;
 	int		j;
@@ -90,9 +96,12 @@ char	*handle_quotes2(char *str)
 		return (NULL);
 	j = 0;
 	i = 0;
+	while (str[i] && j < len - 1 && str[i] != '\'' && str[i] != '\"')
+		dest[j++] = str[i++];
+	c = str[i++];
 	while (str[i] && j < len - 1)
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		while (str[i] && str[i] == c)
 			i++;
 		dest[j++] = str[i++];
 	}

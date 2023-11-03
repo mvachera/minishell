@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/02 19:53:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 20:45:04 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,9 @@ typedef struct s_pipex
 	int		*type;
 	int		*quote;
 	int		is_dollars;
+	int		is_quotes;
 	int		code_err;
 }			t_pipex;
-
-
-
 
 enum		e_token
 {
@@ -69,7 +67,8 @@ enum		e_token
 	COMMAND,
 	ARGUMENT,
 	RANDOM,
-	QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTES,
 	NO_QUOTE,
 	EMPTY,
 };
@@ -93,11 +92,11 @@ void		export_command(t_pipex *pipex, char *str);
 void		unset_command(char *var, t_pipex *pipex);
 int			check_unset(char *var, t_pipex *pipex, int len_var);
 void		env_command(t_pipex *pipex);
-void		execute_builtin(char *str, t_pipex *pipex, int to_free);
+void		execute_builtin(char *str, t_pipex *pipex, int to_free, int index);
 void		execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg);
-char		**get_arg(char *str, t_pipex *pipex, int nb_arg);
+char		**get_arg(char *str, t_pipex *pipex, int nb_arg, int index);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
-int			count_arg(t_pipex *pipex, char *str);
+int			count_arg(t_pipex *pipex, char *str, int index);
 int			handle_builtin(t_pipex *pipex, char *str);
 int			handle_builtin2(t_pipex *pipex, int i);
 int			is_builtin(t_pipex *pipex);

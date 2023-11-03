@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/27 14:26:49 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:17:59 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,20 @@ void	free_memory(t_pipex *pipex)
 
 void	free_pipex(t_pipex *pipex)
 {
+	int	i;
+
+	i = 0;
 	if (pipex->tab != NULL)
 		free_map(pipex->tab);
 	if (pipex->token != NULL)
 		free(pipex->token);
-	if (pipex->cmd_args != NULL)
-		free_map(pipex->cmd_args);
+	while (i < pipex->cmd_count)
+	{
+		if (pipex->cmd_args[i] != NULL)
+			free(pipex->cmd_args[i]);
+		i++;
+	}
+	free(pipex->cmd_args);
 	if (pipex->envp != NULL)
 		free_map(pipex->envp);
 }

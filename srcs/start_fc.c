@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:20:53 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/02 19:32:40 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:00:45 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ char	*tonegatif(t_pipex *pipex, char *str)
 	i = 0;
 	if (is_dollars(str) == 1)
 		pipex->is_dollars = 1;
+	if (find_quotes(str) != 0)
+		pipex->is_quotes = 1;
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')

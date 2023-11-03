@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 16:39:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:20:11 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	create_tab(char *str, t_pipex *pipex, int count)
 	sort_token(pipex->tab, pipex->token, 0, pipex->quote);
 	if (check_random(pipex, count) != 0)
 		return (free(pipex->quote), free_memory(pipex));
-	free(pipex->quote);
 	if (pipex->is_dollars == 1)
 		manage_dollars(pipex);
+	free(pipex->quote);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
 }
