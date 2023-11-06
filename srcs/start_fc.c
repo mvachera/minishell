@@ -6,17 +6,37 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:20:53 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 17:00:45 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:30:33 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	**cpy_envp(char **envp)
+{
+	char	**dst;
+	int		i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	dst = ft_calloc(sizeof(char *), i + 1);
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		dst[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	return (dst);
+}
+
 int	nb_quotes(char *str)
 {
-	int	i;
-	char tmp;
-	int	count;
+	int		i;
+	char	tmp;
+	int		count;
 
 	i = 0;
 	count = 0;

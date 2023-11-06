@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 20:47:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:48:50 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count != 1 || is_builtin(pipex) == 0)
 		return (0);
+	parcours_cmd2(pipex);
+	//new fonction for files
 	while (pipex->tab[i])
 	{
 		if (ft_strcmp(pipex->tab[i], "exit") == 0 && pipex->token[i] == BUILTIN)

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 19:15:46 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 20:47:02 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**get_all_cmd(t_pipex *pipex)
 	{
 		if (pipex->token[i[0]] == PIPE)
 			i[1]++;
-		if (pipex->token[i[0]] == COMMAND || pipex->token[i[0]] == BUILTIN)
+		else if (pipex->token[i[0]] == COMMAND || pipex->token[i[0]] == BUILTIN)
 		{
 			get_all_cmd2(pipex, i, all_cmd);
 			if (!all_cmd[i[1]])
@@ -108,26 +108,23 @@ void	parcours_cmd(t_pipex *pipex)
 void	parcours_cmd2(t_pipex *pipex)
 {
 	int	i;
-	int	j;
-	int	tmp;
 
 	i = 0;
-	j = 0;
-	tmp = 0;
 	while (pipex->tab[i])
 	{
-		if (pipex->token[i] == COMMAND && pipex->tab[i + 1])
+		if (pipex->token[i] == COMMAND || pipex->token[i] == BUILTIN)
 		{
-			j = i + 1;
-			tmp = i;
-			while (pipex->tab[j])
+			i++;
+			if (pipex->tab[i] == NULL)
+				return ;
+			while (pipex->tab[i] && pipex->token[i] != PIPE)
 			{
-				if (pipex->token[j] == PIPE)
-					i++;
-				else if (pipex->token[j] == COMMAND && i == tmp)
-					pipex->token[j] = ARGUMENT;
-				j++;
+				if (pipex->token[i] == COMMAND || pipex->token[i] == BUILTIN)
+					pipex->token[i] = ARGUMENT;
+				i++;
 			}
+			if (pipex->tab[i] == NULL)
+				return ;
 		}
 		i++;
 	}

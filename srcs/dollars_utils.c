@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:28:55 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/01 20:41:56 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 19:02:16 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	new_tab(t_pipex *pipex, char **dst_tab, char **all_var)
 		len_var = ft_strlen2(all_var[i]);
 		if (is_interrogation(all_var[i]) == 1)
 			dst_tab[k++] = handle_interrogation(pipex, all_var[i]);
+		else if (strange_char(all_var[i]) == 1)
+			dst_tab[k++] = ft_strdup(handle_strange(all_var[i]));
 		else
 		{
 			while (pipex->envp[j])
@@ -91,7 +93,13 @@ char	*handle_array_dollar(char **dst_tab, int d)
 	{
 		i[2] = 0;
 		while (dst_tab[i[0]][i[2]])
+		{
+			if (dst_tab[i[0]][i[2]] == '\\')
+				i[2]++;
+			if (!dst_tab[i[0]][i[2]])
+				break ;
 			dst[i[1]++] = dst_tab[i[0]][i[2]++];
+		}
 		i[0]++;
 	}
 	if (d == 1)
@@ -99,7 +107,7 @@ char	*handle_array_dollar(char **dst_tab, int d)
 	return (dst);
 }
 
-int	get_nb_var(t_pipex *pipex, char **all_var, int d)
+int	get_nb_var(t_pipex *pipex, char **s, int d)
 {
 	int	i[4];
 
@@ -107,17 +115,17 @@ int	get_nb_var(t_pipex *pipex, char **all_var, int d)
 	i[2] = 0;
 	if (d == 1)
 		i[2]++;
-	while (all_var[i[0]])
+	while (s[i[0]])
 	{
-		i[3] = ft_strlen2(all_var[i[0]]);
+		i[3] = ft_strlen2(s[i[0]]);
 		i[1] = 0;
-		if (is_interrogation(all_var[i[0]]) == 1)
+		if (is_interrogation(s[i[0]]) == 1 || strange_char(s[i[0]]) == 1)
 			i[2]++;
 		else
 		{
 			while (pipex->envp[i[1]])
 			{
-				if (ft_strncmp(pipex->envp[i[1]], all_var[i[0]], i[3]) == 0
+				if (ft_strncmp(pipex->envp[i[1]], s[i[0]], i[3]) == 0
 					&& pipex->envp[i[1]][i[3]] == '=')
 					i[2]++;
 				i[1]++;

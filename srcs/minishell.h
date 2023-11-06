@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 20:45:04 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:47:45 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,9 @@ char		*ft_strcpy(char *dest, char *src);
 char		*ft_strcat(char *dest, char *src);
 void		parcours_cmd(t_pipex *pipex);
 void		parcours_cmd2(t_pipex *pipex);
-void		openfiles(t_pipex *pipex, int i);
-void		openfiles2(t_pipex *pipex, int i);
-void		mallocfichiers(t_pipex *pipex);
+void		openfiles(t_pipex *pipex, int index);
+void		handle_in_files(t_pipex *pipex, int i);
+void		handle_out_files(t_pipex *pipex, int i);
 void		check_here_doc(t_pipex *pipex);
 void		manage_dollars(t_pipex *pipex);
 char		*manage_dollars2(t_pipex *pipex, int i);
@@ -151,13 +151,15 @@ void		manage_dollars3(t_pipex *pipex, char *tmp, char *tmp_before, int i);
 char		*new_var(t_pipex *pipex, char *var);
 void		new_tab(t_pipex *pipex, char **dst_tab, char **all_var);
 char		*handle_array_dollar(char **dst_tab, int d);
-int			get_nb_var(t_pipex *pipex, char **all_var, int d);
+int			get_nb_var(t_pipex *pipex, char **s, int d);
 int			is_dollars(char *str);
 char		*handle_interrogation(t_pipex *pipex, char *str);
 int			last_command(t_pipex *pipex, char *str);
 int			is_interrogation(char *str);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
+int			strange_char(char *str);
+char		*handle_strange(char *str);
 int			ft_strlen2(char *str);
 
 #endif

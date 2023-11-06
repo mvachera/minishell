@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 20:45:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:09:40 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,15 @@ char	**get_arg(char *str, t_pipex *pipex, int nb_arg, int index)
 	nb_arg = 0;
 	while (pipex->tab[i])
 	{
-		if (ft_strcmp(str, pipex->tab[i]) == 0 && j == index)
+		if (pipex->token[i] == PIPE)
+			j++;
+		else if (ft_strcmp(str, pipex->tab[i]) == 0 && j == index)
 		{
 			get_arg2(pipex, &i, &nb_arg, all_arg);
 			if (!all_arg)
 				return (NULL);
 			break ;
 		}
-		if (ft_strcmp(str, pipex->tab[i]) == 0)
-			j++;
 		i++;
 	}
 	return (all_arg);
@@ -106,11 +106,6 @@ void	get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg)
 	(*i)++;
 	while (pipex->tab[*i] && pipex->token[*i] != PIPE)
 	{
-		// if (pipex->token[*i] != ARGUMENT)
-		// 	return ;
-		// if (pipex->tab[i[0]][0] == '\'' || pipex->tab[i[0]][0] == '\"')
-		// 	all_arg[*nb_arg] = handle_quotes2(pipex->tab[*i]);
-		// else
 		if (pipex->token[*i] == ARGUMENT)
 			all_arg[*nb_arg] = ft_strdup(pipex->tab[*i]);
 		if (!all_arg[*nb_arg])
