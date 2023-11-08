@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/02 19:00:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:15:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	is_meta_string(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (is_metacaractere(str[i]) == 1)

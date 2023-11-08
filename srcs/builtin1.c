@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 18:29:22 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:56:21 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	echo_command(char **arg, int choice, int nb_arg)
 			printf("\n");
 		return ;
 	}
+	if (choice == 0)
+		i++;
 	while (i < nb_arg - 1)
 	{
 		printf("%s ", arg[i]);
@@ -31,6 +33,22 @@ void	echo_command(char **arg, int choice, int nb_arg)
 	printf("%s", arg[i]);
 	if (choice == 1)
 		printf("\n");
+}
+
+int	echo_first_arg(char *arg)
+{
+	int	i;
+
+	if (!arg || arg[0] != '-' || !arg[1])
+		return (0);
+	i = 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	cd_command(t_pipex *pipex, char *path)

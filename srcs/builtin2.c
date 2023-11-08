@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/02 18:37:30 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:58:45 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	env_command(t_pipex *pipex)
 	{
 		write(1, pipex->envp[i], strlen(pipex->envp[i]));
 		write(1, "\n", 1);
-		// ft_putendl_fd(pipex->envp[i], 1);
 		i++;
 	}
 }

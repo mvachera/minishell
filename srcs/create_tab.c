@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 18:20:11 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:39:32 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	create_tab(char *str, t_pipex *pipex, int count)
 	if (pipex->is_dollars == 1)
 		manage_dollars(pipex);
 	free(pipex->quote);
+	clear_files(pipex);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
 }
@@ -46,7 +47,6 @@ void	create_tab(char *str, t_pipex *pipex, int count)
 void	count_nb_tab(char *str, int *count)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	(*count) = 0;
@@ -54,19 +54,23 @@ void	count_nb_tab(char *str, int *count)
 	{
 		while ((str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) && str[i])
 			i++;
-		j = i;
 		if (is_metacaractere(str[i]) == 1)
 		{
 			(*count)++;
-			while (is_metacaractere(str[j]) == 1 && str[j])
-				j++;
+			while (is_metacaractere(str[i]) == 1 && str[i])
+			{
+				if (str[i] == '|' && str[i + 1] != '\0'
+					&& (str[i + 1] == '>' || str[i + 1] == '<'))
+					(*count)++;
+				i++;
+			}
 		}
 		else if (is_metacaractere(str[i]) == 0)
 		{
 			(*count)++;
-			letters_arg(str, &j);
+			while (is_metacaractere(str[i]) == 0 && str[i])
+				i++;
 		}
-		i = j;
 	}
 }
 
@@ -87,7 +91,7 @@ void	extract_to_tab(char **tab, char *str, int count)
 		if (!tab[l])
 		{
 			while (l >= 0)
-				free(tab[--l]);
+				free(tab[l--]);
 			free(tab);
 			return ;
 		}
@@ -109,26 +113,22 @@ void	extract_to_tab2(char *str, int *i, int *j)
 			(*j)++;
 	}
 	else if (is_metacaractere(str[*i]) == 0)
-		letters_arg(str, j);
+	{
+		while (is_metacaractere(str[*j]) == 0 && str[*j])
+			(*j)++;
+	}
 }
 
-void	letters_arg(char *str, int *j)
+void	clear_files(t_pipex *pipex)
 {
-	int	tmp;
+	int	i;
 
-	tmp = 0;
-	while (is_metacaractere(str[*j]) == 0 && str[*j])
-		(*j)++;
-	if (is_metacaractere(str[*j]) == 2)
+	i = 0;
+	while (pipex->tab[i])
 	{
-		tmp = *j;
-		while (is_metacaractere(str[tmp]) == 2 && str[tmp])
-			tmp++;
-		if (str[tmp] == '-')
-		{
-			*j = tmp;
-			while (is_metacaractere(str[*j]) == 0 && str[*j])
-				(*j)++;
-		}
+		if (is_negatif(pipex->tab[i]) == 0 && (pipex->token[i] == IN_FILES
+				|| pipex->token[i] == OUT_FILES || pipex->token[i] == HERE_DOC))
+			negatif_to_positif(pipex->tab[i]);
+		i++;
 	}
 }

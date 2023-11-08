@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:28:55 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 19:02:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:32:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,31 +43,41 @@ char	*new_var(t_pipex *pipex, char *var)
 
 void	new_tab(t_pipex *pipex, char **dst_tab, char **all_var)
 {
-	int	i;
-	int	j;
-	int	k;
-	int	len_var;
+	int		i;
+	int		j;
+	int		k;
+	int		len_var;
+	char	*tmp;
 
 	i = 0;
 	k = 0;
 	while (all_var[i])
 	{
-		j = 0;
-		len_var = ft_strlen2(all_var[i]);
-		if (is_interrogation(all_var[i]) == 1)
-			dst_tab[k++] = handle_interrogation(pipex, all_var[i]);
+		tmp = NULL;
+		len_var = ft_strlen3(all_var[i]);
+		if (strange_char(all_var[i]) == 2)
+			tmp = handle_interrogation(pipex, all_var[i]);
 		else if (strange_char(all_var[i]) == 1)
-			dst_tab[k++] = ft_strdup(handle_strange(all_var[i]));
-		else
+			tmp = ft_strdup(handle_strange(all_var[i]));
+		j = 0;
+		while (pipex->envp[j])
 		{
-			while (pipex->envp[j])
+			if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
+				&& pipex->envp[j][len_var] == '=')
 			{
-				if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
-					&& pipex->envp[j][len_var] == '=')
-					dst_tab[k++] = ft_strdup(pipex->envp[j] + len_var + 1);
-				j++;
+				if (tmp != NULL)
+					dst_tab[k] = str_johnny(pipex->envp[j]
+							+ len_var + 1, tmp);
+				else
+					dst_tab[k] = ft_strdup(pipex->envp[j] + len_var + 1);
 			}
+			j++;
 		}
+		if (dst_tab[k] == NULL && tmp != NULL)
+			dst_tab[k] = ft_strdup(tmp);
+		if (tmp != NULL)
+			free(tmp);
+		k++;
 		i++;
 	}
 }
@@ -119,7 +129,7 @@ int	get_nb_var(t_pipex *pipex, char **s, int d)
 	{
 		i[3] = ft_strlen2(s[i[0]]);
 		i[1] = 0;
-		if (is_interrogation(s[i[0]]) == 1 || strange_char(s[i[0]]) == 1)
+		if (strange_char(s[i[0]]) != 0)
 			i[2]++;
 		else
 		{

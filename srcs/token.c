@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 17:17:00 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:33:11 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	sort_token(char **tab, int *token, int i, int *quote)
 	while (tab[i])
 	{
 		if (!tab[i] || !*tab[i])
-			token[i] = EMPTY;
-		else if (ft_strcmp(tab[i], "|") == 0 && quote[i] == NO_QUOTE)
+			tab[i] = NULL;
+		if (ft_strcmp(tab[i], "|") == 0 && quote[i] == NO_QUOTE)
 			token[i] = PIPE;
 		else if (ft_strcmp(tab[i], "<") == 0 && quote[i] == NO_QUOTE)
 			token[i] = CHEVRON_G;
@@ -59,8 +59,6 @@ int	check_builtin(char *str)
 {
 	if (ft_strcmp(str, "echo") == 0)
 		return (1);
-	else if (ft_strcmp(str, "echo -n") == 0)
-		return (1);
 	else if (ft_strcmp(str, "cd") == 0)
 		return (1);
 	else if (ft_strcmp(str, "pwd") == 0)
@@ -81,6 +79,10 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1)
+		return (s2[0]);
+	if (!s2)
+		return (s1[0]);
 	while (s1[i] || s2[i])
 	{
 		if (s1[i] > s2[i] || s1[i] < s2[i])

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 21:46:58 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:59:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	check_here_doc(t_pipex *pipex)
 			pipex->here_doc = 1;
 			pipex->file_here_doc = "here_doc";
 			pipex->limiteur = pipex->tab[i];
-
 		}
 		i++;
 	}
@@ -80,6 +79,9 @@ void	handle_in_files(t_pipex *pipex, int i)
 
 void	handle_out_files(t_pipex *pipex, int i)
 {
+	while (i > 0 && pipex->token[i] != PIPE)
+		i--;
+	i++;
 	while (pipex->tab[i] && pipex->token[i] != PIPE)
 	{
 		if (pipex->token[i] == OUT_FILES)
@@ -167,4 +169,3 @@ void	handle_out_files(t_pipex *pipex, int i)
 // 		i[0]++;
 // 	}
 // }
-

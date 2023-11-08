@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 21:49:14 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:10:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	execute(t_pipex *pipex, char *command, char **tab)
 {
 	if (command)
 	{
+		clean_arg(tab);
 		execve(command, tab, pipex->envp);
 		free(command);
 	}
@@ -82,8 +83,9 @@ void	child_process(t_pipex *pipex, int index)
 
 int	ft_exec(t_pipex *pipex)
 {
-	int	i;
-	static int var;
+	static int	var;
+	int			i;
+
 	i = 0;
 	while (i < pipex->cmd_count)
 	{
@@ -111,7 +113,6 @@ int	ft_exec(t_pipex *pipex)
 			pipex->code_err = WEXITSTATUS(pipex->code_err);
 		if (pipex->code_err == 131 && !var++)
 			ft_printf("Quit (core dumped)\n");
-
 	}
 	return (1);
 }

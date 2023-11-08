@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 20:47:02 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:19:46 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	parcours_cmd(t_pipex *pipex)
 
 	i = 0;
 	c = 0;
+	cmd = NULL;
 	parcours_cmd2(pipex);
 	while (pipex->tab[i])
 	{
@@ -93,13 +94,15 @@ void	parcours_cmd(t_pipex *pipex)
 			c = i;
 			tab_tmp = ft_split(pipex->tab[i], ' ');
 			cmd = get_cmd(tab_tmp, pipex);
+			negatif_to_positif(pipex->tab[i]);
 			if (!cmd)
 				(ft_printf("%s : command not found\n", pipex->tab[i]));
-			if (!cmd && last_command(pipex, pipex->tab[i]) == 1)
+			if (!cmd)
 				pipex->code_err = 127;
 			else if (cmd)
 				free(cmd);
 			free_map(tab_tmp);
+			positif_to_negatif(pipex->tab[i]);
 		}
 		i++;
 	}

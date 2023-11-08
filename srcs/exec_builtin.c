@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 17:09:40 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:54:07 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ void	execute_builtin(char *str, t_pipex *pipex, int to_free, int index)
 
 	nb_arg = count_arg(pipex, str, index);
 	arg = get_arg(str, pipex, nb_arg, index);
-	if (ft_strcmp(str, "echo") == 0)
-		echo_command(arg, 1, nb_arg);
-	else if (ft_strcmp(str, "echo -n") == 0)
-		echo_command(arg, 0, nb_arg);
-	else if (ft_strcmp(str, "pwd") == 0)
+	if (nb_arg > 0)
+		clean_arg(arg);
+	if (ft_strcmp(str, "pwd") == 0)
 		pwd_command();
+	else if (ft_strcmp(str, "echo") == 0
+		&& nb_arg > 0 && echo_first_arg(arg[0]) == 1)
+		echo_command(arg, 0, nb_arg);
+	else if (ft_strcmp(str, "echo") == 0)
+		echo_command(arg, 1, nb_arg);
 	else
 		execute_builtin2(str, pipex, arg, nb_arg);
 	if (arg != NULL)
@@ -42,7 +45,7 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 {
 	if (ft_strcmp(str, "cd") == 0)
 	{
-		if (last_command(pipex, str) == 1 && nb_arg > 1)
+		if (nb_arg > 1)
 			pipex->code_err = 1;
 		if (nb_arg == 0)
 			chdir("/mnt/nfs/homes/mvachera");
@@ -53,7 +56,7 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 	}
 	else if (ft_strcmp(str, "env") == 0)
 	{
-		if (last_command(pipex, str) == 1 && nb_arg != 0)
+		if (nb_arg != 0)
 			pipex->code_err = 127;
 		if (nb_arg == 0)
 			env_command(pipex);

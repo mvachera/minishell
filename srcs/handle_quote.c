@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/03 17:20:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:26:31 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	check_quotes(char **tab, t_pipex *pipex, int count)
 	while (tab[i])
 	{
 		pipex->quote[i] = NO_QUOTE;
-		if (find_quotes(tab[i]) != 0)
+		if (find_quotes(tab[i]) != 0 && ft_strcmp(tab[i], "\"\"") != 0
+			&& ft_strcmp(tab[i], "''") != 0)
 		{
 			if (find_quotes(tab[i]) == 1)
 				pipex->quote[i] = SINGLE_QUOTE;
@@ -73,6 +74,8 @@ void	handle_quotes(char *str)
 			while (str[i] && str[i] != c)
 			{
 				str[i] = -str[i];
+				if (str[i] == ' ' || str[i] == '\t')
+					str[i] = -str[i];
 				i++;
 			}
 		}

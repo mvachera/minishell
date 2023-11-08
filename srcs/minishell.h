@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 21:47:45 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:11:16 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int			ft_count(char const *s, char c);
 int			nb_cmd(t_pipex *pipex);
 
 void		echo_command(char **arg, int choice, int nb_arg);
+int			echo_first_arg(char *arg);
 void		cd_utils(char *path);
 void		cd_command(t_pipex *pipex, char *path);
 void		pwd_command(void);
@@ -98,25 +99,29 @@ char		**get_arg(char *str, t_pipex *pipex, int nb_arg, int index);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str, int index);
 int			handle_builtin(t_pipex *pipex, char *str);
-int			handle_builtin2(t_pipex *pipex, int i);
 int			is_builtin(t_pipex *pipex);
 void		handle_exit(t_pipex *pipex, int i);
 
 int			start_main(int ac, t_pipex *pipex, char **envp);
 int			nb_quotes(char *str);
 char		*tonegatif(t_pipex *pipex, char *str);
+int			code_signal(int b);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);
 void		create_tab(char *str, t_pipex *pipex, int count);
 void		count_nb_tab(char *str, int *count);
 void		extract_to_tab(char **tab, char *str, int count);
 void		extract_to_tab2(char *str, int *i, int *j);
-void		letters_arg(char *str, int *j);
 int			stop_str(char *str);
 int			check_quotes(char **tab, t_pipex *pipex, int count);
 int			find_quotes(char *str);
 void		handle_quotes(char *str);
 char		*handle_quotes2(char *str);
+int			is_negatif(char *str);
+void		negatif_to_positif(char *str);
+void		positif_to_negatif(char *str);
+void		clean_arg(char **tab);
+void		clear_files(t_pipex *pipex);
 int			check_random(t_pipex *pipex, int count);
 int			check_first_str(char *str);
 int			is_meta_string(char *str);
@@ -154,12 +159,14 @@ char		*handle_array_dollar(char **dst_tab, int d);
 int			get_nb_var(t_pipex *pipex, char **s, int d);
 int			is_dollars(char *str);
 char		*handle_interrogation(t_pipex *pipex, char *str);
-int			last_command(t_pipex *pipex, char *str);
-int			is_interrogation(char *str);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
 int			strange_char(char *str);
 char		*handle_strange(char *str);
 int			ft_strlen2(char *str);
+int			ft_strlen3(char *str);
+int			builtin_open_files(t_pipex *pipex);
+int			builtin_in_files(t_pipex *pipex);
+int			builtin_out_files(t_pipex *pipex);
 
 #endif
