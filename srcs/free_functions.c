@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 21:46:38 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:00:11 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 void	free_memory(t_pipex *pipex)
 {
+	int	i;
+
+	i = 0;
 	if (pipex->tab != NULL)
-		free_map(pipex->tab);
+	{
+		while (i < pipex->count)
+			free(pipex->tab[i++]);
+		free(pipex->tab);
+	}
 	if (pipex->token != NULL)
 		free(pipex->token);
 }
@@ -26,16 +33,20 @@ void	free_pipex(t_pipex *pipex)
 
 	i = 0;
 	if (pipex->tab != NULL)
-		free_map(pipex->tab);
+	{
+		while (i < pipex->count)
+			free(pipex->tab[i++]);
+		free(pipex->tab);
+	}
 	if (pipex->token != NULL)
 		free(pipex->token);
-	while (i < pipex->cmd_count)
+	i = 0;
+	if (pipex->cmd_args != NULL)
 	{
-		if (pipex->cmd_args[i] != NULL)
-			free(pipex->cmd_args[i]);
-		i++;
+		while (i < pipex->cmd_count)
+			free(pipex->cmd_args[i++]);
+		free(pipex->cmd_args);
 	}
-	free(pipex->cmd_args);
 	if (pipex->envp != NULL)
 		free_map(pipex->envp);
 }

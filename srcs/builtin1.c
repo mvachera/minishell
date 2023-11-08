@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 21:56:21 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:34:07 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	cd_command(t_pipex *pipex, char *path)
 		if (chdir(path) == -1)
 		{
 			pipex->code_err = 1;
-			ft_printf("cd : no such file or directory : %s\n", path);
+			ft_printf("cd : %s : No such file or directory\n", path);
 		}
 		return ;
 	}
@@ -77,7 +77,7 @@ void	cd_command(t_pipex *pipex, char *path)
 	if (chdir(absolu) != 0)
 	{
 		pipex->code_err = 1;
-		ft_printf("cd : no such file or directory : %s\n", path);
+		ft_printf("cd : %s : No such file or directory\n", path);
 	}
 	free(cwd2);
 	free(absolu);
@@ -102,14 +102,10 @@ void	export_command(t_pipex *pipex, char *str)
 	int		env_count;
 	int		i;
 
-	if (ft_strchr(str, '=') == NULL)
+	if (export_utils(str) == 1)
 	{
-		pipex->code_err = 0;
-		return ;
-	}
-	if (ft_strchr(str, '-') != NULL)
-	{
-		pipex->code_err = 0;
+		pipex->code_err = 1;
+		ft_printf("%s : not a valid identifier\n", str);
 		return ;
 	}
 	env_count = 0;
@@ -127,4 +123,5 @@ void	export_command(t_pipex *pipex, char *str)
 	new_envp[i] = ft_strdup(str);
 	free_map(pipex->envp);
 	pipex->envp = new_envp;
+	pipex->code_err = 0;
 }

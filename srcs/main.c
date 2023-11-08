@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 19:24:38 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:26:01 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **envp)
 		if (nb_quotes(str) == 0)
 		{
 			str = tonegatif(&pipex, str);
-			create_tab(str, &pipex, 0);
+			create_tab(str, &pipex);
 		}
 	}
 	free_map(pipex.envp);

@@ -6,11 +6,31 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 15:58:45 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:39:12 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	export_utils(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strlen(str) == 1)
+		return (1);
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (0);
+		if (str[i] == '-')
+			return (1);
+		if (str[i] >= '0' && str[i] <= '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	check_unset(char *var, t_pipex *pipex, int len_var)
 {

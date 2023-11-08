@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 16:32:02 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 22:04:21 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	parcours_cmd2(pipex);
 	if (builtin_open_files(pipex) == 0)
 		return (1);
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == BUILTIN)
 			return (execute_builtin(pipex->tab[i], pipex, 0, 0), 1);
@@ -37,7 +37,7 @@ int	is_builtin(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == BUILTIN)
 			return (1);
@@ -46,24 +46,24 @@ int	is_builtin(t_pipex *pipex)
 	return (0);
 }
 
-void	handle_exit(t_pipex *pipex, int i)
+void	handle_exit(t_pipex *pipex, int nb_arg)
 {
-	int	arg;
+	int	i;
 
-	arg = 0;
+	i = 0;
 	ft_printf("exit\n");
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
-		ft_printf("{%s}\n", pipex->tab[i]);
-		ft_printf("[{%d}]\n", pipex->token[i]);
-		if (pipex->token[i] == ARGUMENT && arg == 0)
+		if (pipex->token[i] == ARGUMENT)
 		{
-			arg = 1;
 			pipex->code_err = 2;
 			ft_printf("exit : %s : numeric argument required\n", pipex->tab[i]);
 		}
 		i++;
 	}
+	if (nb_arg > 1)
+		return (pipex->code_err = 1, ft_printf("exit: too many arguments\n"),
+			free_exit(pipex));
 	free_exit(pipex);
 	exit(pipex->code_err);
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 15:59:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:34:00 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	check_here_doc(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == HERE_DOC)
 		{
@@ -36,12 +36,11 @@ void	openfiles(t_pipex *pipex, int index)
 
 	i = 0;
 	j = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == PIPE)
 			j++;
-		else if ((pipex->token[i] == COMMAND || pipex->token[i] == BUILTIN)
-			&& j == index)
+		else if (j == index)
 		{
 			handle_in_files(pipex, i);
 			handle_out_files(pipex, i);
@@ -56,7 +55,7 @@ void	handle_in_files(t_pipex *pipex, int i)
 	while (i > 0 && pipex->token[i] != PIPE)
 		i--;
 	i++;
-	while (pipex->tab[i] && pipex->token[i] != PIPE)
+	while (i < pipex->count && pipex->token[i] != PIPE)
 	{
 		if (pipex->token[i] == IN_FILES || pipex->token[i] == HERE_DOC)
 		{
@@ -82,7 +81,7 @@ void	handle_out_files(t_pipex *pipex, int i)
 	while (i > 0 && pipex->token[i] != PIPE)
 		i--;
 	i++;
-	while (pipex->tab[i] && pipex->token[i] != PIPE)
+	while (i < pipex->count && pipex->token[i] != PIPE)
 	{
 		if (pipex->token[i] == OUT_FILES)
 		{

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:07:05 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 19:30:30 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:15:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,20 @@ char	*handle_strange(char *str)
 		i++;
 	}
 	return (NULL);
+}
+
+int	is_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	ft_strlen3(char *str)

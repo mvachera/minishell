@@ -6,19 +6,22 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 21:33:11 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:20:12 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sort_token(char **tab, int *token, int i, int *quote)
+void	sort_token(t_pipex *pipex, char **tab, int *token, int *quote)
 {
-	while (tab[i])
+	int	i;
+
+	i = 0;
+	while (i < pipex->count)
 	{
 		if (!tab[i] || !*tab[i])
-			tab[i] = NULL;
-		if (ft_strcmp(tab[i], "|") == 0 && quote[i] == NO_QUOTE)
+			token[i] = EMPTY;
+		else if (ft_strcmp(tab[i], "|") == 0 && quote[i] == NO_QUOTE)
 			token[i] = PIPE;
 		else if (ft_strcmp(tab[i], "<") == 0 && quote[i] == NO_QUOTE)
 			token[i] = CHEVRON_G;
@@ -29,11 +32,9 @@ void	sort_token(char **tab, int *token, int i, int *quote)
 		else if (ft_strcmp(tab[i], ">>") == 0 && quote[i] == NO_QUOTE)
 			token[i] = D_CHEVRON_D;
 		else if (i != 0 && (token[i - 1] == COMMAND || token[i - 1] == ARGUMENT
-				|| token[i -1] == BUILTIN) && (is_meta_string(tab[i]) == 0
+				|| token[i - 1] == BUILTIN) && (is_meta_string(tab[i]) == 0
 				|| quote[i] == SINGLE_QUOTE || quote[i] == DOUBLE_QUOTES))
 			token[i] = ARGUMENT;
-		else if (check_builtin(tab[i]) == 1)
-			token[i] = BUILTIN;
 		else
 			sort_token2(tab, token, i);
 		i++;
@@ -42,7 +43,9 @@ void	sort_token(char **tab, int *token, int i, int *quote)
 
 void	sort_token2(char **tab, int *token, int i)
 {
-	if (i != 0 && token[i - 1] == D_CHEVRON_G)
+	if (check_builtin(tab[i]) == 1)
+		token[i] = BUILTIN;
+	else if (i != 0 && token[i - 1] == D_CHEVRON_G)
 			token[i] = HERE_DOC;
 	else if (i != 0 && token[i - 1] == CHEVRON_G)
 			token[i] = IN_FILES;

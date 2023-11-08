@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:02:20 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 16:39:03 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:29:28 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	builtin_open_files(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == BUILTIN)
 		{
@@ -37,7 +37,7 @@ int	builtin_in_files(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == IN_FILES || pipex->token[i] == HERE_DOC)
 		{
@@ -64,7 +64,7 @@ int	builtin_out_files(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == OUT_FILES)
 		{

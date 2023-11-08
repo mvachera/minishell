@@ -6,22 +6,22 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 20:26:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:28:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_quotes(char **tab, t_pipex *pipex, int count)
+int	check_quotes(char **tab, t_pipex *pipex)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
-	pipex->quote = ft_calloc(sizeof(int), count);
+	pipex->quote = ft_calloc(sizeof(int), pipex->count);
 	if (!pipex->quote)
 		return (-1);
-	while (tab[i])
+	while (i < pipex->count)
 	{
 		pipex->quote[i] = NO_QUOTE;
 		if (find_quotes(tab[i]) != 0 && ft_strcmp(tab[i], "\"\"") != 0

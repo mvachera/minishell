@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 20:19:46 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:36:22 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**get_all_cmd(t_pipex *pipex)
 	all_cmd = ft_calloc(sizeof(char *), (pipex->cmd_count + 1));
 	if (!all_cmd)
 		return (NULL);
-	while (pipex->tab[i[0]])
+	while (i[0] < pipex->count)
 	{
 		if (pipex->token[i[0]] == PIPE)
 			i[1]++;
@@ -55,7 +55,7 @@ int	check_arg(char *str, t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (ft_strcmp(str, pipex->tab[i]) == 0)
 		{
@@ -87,7 +87,7 @@ void	parcours_cmd(t_pipex *pipex)
 	c = 0;
 	cmd = NULL;
 	parcours_cmd2(pipex);
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == COMMAND)
 		{
@@ -96,9 +96,11 @@ void	parcours_cmd(t_pipex *pipex)
 			cmd = get_cmd(tab_tmp, pipex);
 			negatif_to_positif(pipex->tab[i]);
 			if (!cmd)
-				(ft_printf("%s : command not found\n", pipex->tab[i]));
-			if (!cmd)
 				pipex->code_err = 127;
+			if (!cmd && is_slash(pipex->tab[i]) == 0)
+				ft_printf("%s : command not found\n", pipex->tab[i]);
+			else if (!cmd && is_slash(pipex->tab[i]) == 1)
+				ft_printf("%s : No such file or directory\n", pipex->tab[i]);
 			else if (cmd)
 				free(cmd);
 			free_map(tab_tmp);
@@ -113,7 +115,7 @@ void	parcours_cmd2(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == COMMAND || pipex->token[i] == BUILTIN)
 		{

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 21:54:07 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 22:02:26 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_builtin(char *str, t_pipex *pipex, int to_free, int index)
 	int		nb_arg;
 
 	nb_arg = count_arg(pipex, str, index);
-	arg = get_arg(str, pipex, nb_arg, index);
+	arg = get_arg(pipex, nb_arg, index);
 	if (nb_arg > 0)
 		clean_arg(arg);
 	if (ft_strcmp(str, "pwd") == 0)
@@ -72,13 +72,15 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 	}
 	else if (ft_strcmp(str, "unset") == 0 && nb_arg > 0)
 		unset_command(arg[0], pipex);
+	else if (ft_strcmp(str, "exit") == 0)
+		handle_exit(pipex, nb_arg);
 }
 
-char	**get_arg(char *str, t_pipex *pipex, int nb_arg, int index)
+char	**get_arg(t_pipex *pipex, int nb_arg, int index)
 {
 	char	**all_arg;
-	int		j;
 	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -88,11 +90,11 @@ char	**get_arg(char *str, t_pipex *pipex, int nb_arg, int index)
 	if (!all_arg)
 		return (NULL);
 	nb_arg = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == PIPE)
 			j++;
-		else if (ft_strcmp(str, pipex->tab[i]) == 0 && j == index)
+		else if (j == index)
 		{
 			get_arg2(pipex, &i, &nb_arg, all_arg);
 			if (!all_arg)
@@ -112,11 +114,7 @@ void	get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg)
 		if (pipex->token[*i] == ARGUMENT)
 			all_arg[*nb_arg] = ft_strdup(pipex->tab[*i]);
 		if (!all_arg[*nb_arg])
-		{
-			while (*nb_arg >= 0)
-				free(all_arg[*nb_arg--]);
-			return (free(all_arg));
-		}
+			all_arg[*nb_arg] = NULL;
 		(*nb_arg)++;
 		(*i)++;
 	}
@@ -130,16 +128,18 @@ int	count_arg(t_pipex *pipex, char *str, int index)
 	i[0] = 0;
 	i[1] = 0;
 	k = 0;
-	while (pipex->tab[i[0]])
+	while (i[0] < pipex->count)
 	{
-		if (ft_strcmp(str, pipex->tab[i[0]]) == 0 && k == index)
+		if (pipex->token[i[0]] == PIPE)
+			k++;
+		else if (ft_strcmp(str, pipex->tab[i[0]]) == 0 && k == index)
 		{
 			if (pipex->tab[i[0] + 1] == NULL)
 				return (0);
 			else
 			{
 				i[0]++;
-				while (pipex->tab[i[0]] && pipex->token[i[0]] != PIPE)
+				while (i[0] < pipex->count && pipex->token[i[0]] != PIPE)
 				{
 					if (pipex->token[i[0]] == ARGUMENT)
 						i[1]++;
@@ -148,8 +148,6 @@ int	count_arg(t_pipex *pipex, char *str, int index)
 				break ;
 			}
 		}
-		if (ft_strcmp(str, pipex->tab[i[0]]) == 0)
-			k++;
 		i[0]++;
 	}
 	return (i[1]);

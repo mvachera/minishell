@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 21:27:38 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/26 21:22:39 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:41:12 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*manage_arg(char *str, t_pipex *pipex)
 	dst = ft_calloc(sizeof(char), (len + 1));
 	if (!dst)
 		return (NULL);
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (ft_strcmp(str, pipex->tab[i]) == 0)
 		{
@@ -48,7 +48,7 @@ int	get_len(char *str, t_pipex *pipex)
 
 	count = 0;
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (ft_strcmp(str, pipex->tab[i]) == 0)
 		{

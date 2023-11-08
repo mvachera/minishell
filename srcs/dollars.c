@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 19:20:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/06 18:28:03 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:19:22 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	manage_dollars(t_pipex *pipex)
 	char	*tmp;
 
 	i = 0;
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (is_dollars(pipex->tab[i]) == 1 && ft_strlen(pipex->tab[i]) > 1
 			&& pipex->quote[i] != SINGLE_QUOTE)
@@ -77,7 +77,7 @@ void	manage_dollars3(t_pipex *pipex, char *tmp, char *tmp_before, int i)
 	if (!pipex->tab[i])
 	{
 		while (i >= 0)
-			free(pipex->tab[--i]);
+			free(pipex->tab[i--]);
 		free(pipex->tab);
 		return ;
 	}

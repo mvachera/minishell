@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 22:11:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:37:15 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_pipex
 	int		is_dollars;
 	int		is_quotes;
 	int		code_err;
+	int		count;
 }			t_pipex;
 
 enum		e_token
@@ -90,12 +91,13 @@ void		cd_utils(char *path);
 void		cd_command(t_pipex *pipex, char *path);
 void		pwd_command(void);
 void		export_command(t_pipex *pipex, char *str);
+int			export_utils(char *str);
 void		unset_command(char *var, t_pipex *pipex);
 int			check_unset(char *var, t_pipex *pipex, int len_var);
 void		env_command(t_pipex *pipex);
 void		execute_builtin(char *str, t_pipex *pipex, int to_free, int index);
 void		execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg);
-char		**get_arg(char *str, t_pipex *pipex, int nb_arg, int index);
+char		**get_arg(t_pipex *pipex, int nb_arg, int index);
 void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str, int index);
 int			handle_builtin(t_pipex *pipex, char *str);
@@ -108,12 +110,12 @@ char		*tonegatif(t_pipex *pipex, char *str);
 int			code_signal(int b);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);
-void		create_tab(char *str, t_pipex *pipex, int count);
-void		count_nb_tab(char *str, int *count);
-void		extract_to_tab(char **tab, char *str, int count);
+void		create_tab(char *str, t_pipex *pipex);
+void		count_nb_tab(char *str, t_pipex *pipex, int i);
+void		extract_to_tab(t_pipex *pipex, char **tab, char *str);
 void		extract_to_tab2(char *str, int *i, int *j);
 int			stop_str(char *str);
-int			check_quotes(char **tab, t_pipex *pipex, int count);
+int			check_quotes(char **tab, t_pipex *pipex);
 int			find_quotes(char *str);
 void		handle_quotes(char *str);
 char		*handle_quotes2(char *str);
@@ -121,13 +123,13 @@ int			is_negatif(char *str);
 void		negatif_to_positif(char *str);
 void		positif_to_negatif(char *str);
 void		clean_arg(char **tab);
-void		clear_files(t_pipex *pipex);
-int			check_random(t_pipex *pipex, int count);
+void		clear_all(t_pipex *pipex);
+int			check_random(t_pipex *pipex);
 int			check_first_str(char *str);
 int			is_meta_string(char *str);
 int			is_metacaractere(char c);
 char		*cpy(char *str, int i, int j);
-void		sort_token(char **tab, int *token, int i, int *quote);
+void		sort_token(t_pipex *pipex, char **tab, int *token, int *quote);
 void		sort_token2(char **tab, int *token, int i);
 int			check_builtin(char *str);
 void		free_memory(t_pipex *pipex);
@@ -168,5 +170,6 @@ int			ft_strlen3(char *str);
 int			builtin_open_files(t_pipex *pipex);
 int			builtin_in_files(t_pipex *pipex);
 int			builtin_out_files(t_pipex *pipex);
+int			is_slash(char *str);
 
 #endif

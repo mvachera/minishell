@@ -6,41 +6,28 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 17:15:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:29:06 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_random(t_pipex *pipex, int count)
+int	check_random(t_pipex *pipex)
 {
 	int	i;
 
 	i = 0;
 	if (ft_strcmp(pipex->tab[0], "|") == 0)
 		return (ft_printf("syntax error near unexpected token `|'\n"), 1);
-	while (pipex->tab[i])
+	while (i < pipex->count)
 	{
 		if (pipex->token[i] == RANDOM && pipex->quote[i] == NO_QUOTE)
 			return (ft_handle_size(pipex->tab[i]));
-		if (pipex->tab[i + 1] && is_meta_string(pipex->tab[i]) == 1
-			&& is_meta_string(pipex->tab[i + 1]) == 1
-			&& pipex->quote[i] == NO_QUOTE)
-		{
-			if (ft_strlen(pipex->tab[i + 1]) == 1)
-			{
-				// printf("{%s}[%s]\n", pipex->tab[i], pipex->tab[i + 1]); ici la faux
-				// > a | > b syntax error alors que normalement non
-				return (print_error_syntax(pipex->tab[i + 1][0], 0, 1), 2);
-			}
-			else
-				return (print_error_syntax(pipex->tab[i + 1][0],
-					pipex->tab[i + 1][1], 2), 2);
-		}
 		i++;
 	}
-	if (pipex->token[count - 1] >= 0 && pipex->token[count - 1] <= 4
-		&& pipex->quote[count - 1] == NO_QUOTE)
+	if (pipex->token[pipex->count - 1] >= 0
+		&& pipex->token[pipex->count - 1] <= 4
+		&& pipex->quote[pipex->count - 1] == NO_QUOTE)
 		return (ft_printf("syntax error near unexpected token `newline'\n"), 1);
 	return (0);
 }
