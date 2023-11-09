@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 22:02:26 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:06:52 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_builtin(char *str, t_pipex *pipex, int to_free, int index)
 		echo_command(arg, 1, nb_arg);
 	else
 		execute_builtin2(str, pipex, arg, nb_arg);
-	if (arg != NULL)
+	if (nb_arg > 0)
 		free_map(arg);
 	if (to_free == 0)
 		free_memory(pipex);
@@ -73,7 +73,7 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 	else if (ft_strcmp(str, "unset") == 0 && nb_arg > 0)
 		unset_command(arg[0], pipex);
 	else if (ft_strcmp(str, "exit") == 0)
-		handle_exit(pipex, nb_arg);
+		handle_exit(pipex, arg, nb_arg);
 }
 
 char	**get_arg(t_pipex *pipex, int nb_arg, int index)
@@ -94,7 +94,8 @@ char	**get_arg(t_pipex *pipex, int nb_arg, int index)
 	{
 		if (pipex->token[i] == PIPE)
 			j++;
-		else if (j == index)
+		else if (j == index && (pipex->token[i] == COMMAND
+				|| pipex->token[i] == BUILTIN))
 		{
 			get_arg2(pipex, &i, &nb_arg, all_arg);
 			if (!all_arg)
@@ -109,13 +110,17 @@ char	**get_arg(t_pipex *pipex, int nb_arg, int index)
 void	get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg)
 {
 	(*i)++;
-	while (pipex->tab[*i] && pipex->token[*i] != PIPE)
+	while (*i < pipex->count && pipex->token[*i] != PIPE)
 	{
-		if (pipex->token[*i] == ARGUMENT)
+		if (pipex->token[*i] == ARGUMENT
+			&& ft_strcmp(pipex->tab[*i], "''") != 0
+			&& ft_strcmp(pipex->tab[*i], "\"\"") != 0)
+		{
 			all_arg[*nb_arg] = ft_strdup(pipex->tab[*i]);
-		if (!all_arg[*nb_arg])
-			all_arg[*nb_arg] = NULL;
-		(*nb_arg)++;
+			if (!all_arg[*nb_arg])
+				all_arg[*nb_arg] = NULL;
+			(*nb_arg)++;
+		}
 		(*i)++;
 	}
 }
@@ -141,7 +146,9 @@ int	count_arg(t_pipex *pipex, char *str, int index)
 				i[0]++;
 				while (i[0] < pipex->count && pipex->token[i[0]] != PIPE)
 				{
-					if (pipex->token[i[0]] == ARGUMENT)
+					if (pipex->token[i[0]] == ARGUMENT
+						&& ft_strcmp(pipex->tab[i[0]], "''") != 0
+						&& ft_strcmp(pipex->tab[i[0]], "\"\"") != 0)
 						i[1]++;
 					i[0]++;
 				}

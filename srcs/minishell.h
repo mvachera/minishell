@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 21:37:15 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:02:16 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,14 @@ void		get_arg2(t_pipex *pipex, int *i, int *nb_arg, char **all_arg);
 int			count_arg(t_pipex *pipex, char *str, int index);
 int			handle_builtin(t_pipex *pipex, char *str);
 int			is_builtin(t_pipex *pipex);
-void		handle_exit(t_pipex *pipex, int i);
+void		handle_exit(t_pipex *pipex, char **arg, int nb_arg);
+int			is_numeric_string(char *str);
 
-int			start_main(int ac, t_pipex *pipex, char **envp);
-int			nb_quotes(char *str);
 char		*tonegatif(t_pipex *pipex, char *str);
+int			start_main(int ac, t_pipex *pipex, char **envp);
+int			capt_sign(void);
+int			nb_quotes(char *str);
+char		*to(t_pipex *pipex, char *str);
 int			code_signal(int b);
 void		ft_react_to_signal(int sig);
 void		ft_interrupt(int sig);

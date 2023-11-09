@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:02:20 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 19:29:28 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:07:34 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ int	builtin_in_files(t_pipex *pipex)
 				pipex->fd = open(pipex->file_here_doc, O_RDONLY);
 			if (pipex->fd == -1)
 			{
-				ft_printf("%s : No such file or directory\n", pipex->tab[i]);
+				ft_printf("%s : %s\n", pipex->tab[i], strerror(errno));
 				free_memory(pipex);
+				pipex->code_err = 1;
 				return (0);
 			}
 			dup2(pipex->fd, 0);
@@ -76,9 +77,8 @@ int	builtin_out_files(t_pipex *pipex)
 						O_CREAT | O_RDWR | O_APPEND, 0666);
 			if (pipex->fd == -1)
 			{
-				ft_printf("%s : No such file or directory\n", pipex->tab[i]);
-				free_memory(pipex);
-				return (0);
+				ft_printf("%s : %s\n", pipex->tab[i], strerror(errno));
+				return (free_memory(pipex), pipex->code_err = 1, 0);
 			}
 			dup2(pipex->fd, 1);
 			close(pipex->fd);

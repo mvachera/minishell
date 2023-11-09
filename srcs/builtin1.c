@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 21:34:07 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 22:44:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,20 @@ void	echo_command(char **arg, int choice, int nb_arg)
 	if (nb_arg == 0)
 	{
 		if (choice == 1)
-			printf("\n");
+			write(1, "\n", 1);
 		return ;
 	}
 	if (choice == 0)
 		i++;
 	while (i < nb_arg - 1)
 	{
-		printf("%s ", arg[i]);
+		write(1, arg[i], ft_strlen(arg[i]));
+		write(1, " ", 1);
 		i++;
 	}
-	printf("%s", arg[i]);
+	write(1, arg[i], ft_strlen(arg[i]));
 	if (choice == 1)
-		printf("\n");
+		write(1, "\n", 1);
 }
 
 int	echo_first_arg(char *arg)
@@ -62,7 +63,7 @@ void	cd_command(t_pipex *pipex, char *path)
 		if (chdir(path) == -1)
 		{
 			pipex->code_err = 1;
-			ft_printf("cd : %s : No such file or directory\n", path);
+			ft_printf("cd : %s\n", strerror(errno));
 		}
 		return ;
 	}
@@ -77,7 +78,7 @@ void	cd_command(t_pipex *pipex, char *path)
 	if (chdir(absolu) != 0)
 	{
 		pipex->code_err = 1;
-		ft_printf("cd : %s : No such file or directory\n", path);
+		ft_printf("cd : %s\n", strerror(errno));
 	}
 	free(cwd2);
 	free(absolu);
@@ -117,6 +118,11 @@ void	export_command(t_pipex *pipex, char *str)
 	i = 0;
 	while (pipex->envp[i])
 	{
+		// if (!ft_strcmp(str, pipex->envp[i], len_var)
+		// 	&& pipex->envp[i][len_var] == '=')
+		// 	i++;
+		// if (pipex->envp[i] == NULL)
+		// 	break ;
 		new_envp[i] = ft_strdup(pipex->envp[i]);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:07:05 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 17:15:38 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:23:06 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*handle_interrogation(t_pipex *pipex, char *str)
 	if (!dst)
 		return (free(code_error), NULL);
 	free(code_error);
+	pipex->code_err = 0;
 	return (dst);
 }
 

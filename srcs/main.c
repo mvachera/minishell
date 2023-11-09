@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 19:26:01 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:25:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av, char **envp)
 		return (2);
 	while (1)
 	{
-		if (signal(SIGINT, &ft_react_to_signal) == SIG_ERR)
+		if (capt_sign() == -1)
 			return (-1);
 		str = readline("> ");
 		if (!str)

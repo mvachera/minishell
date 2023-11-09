@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 19:27:48 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:23:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 int	code_signal(int b)
 {
-	static int	a;
+	static int	a = 0;
 	int			c;
 
-	a = 0;
 	if (b == -1)
 	{
 		a = 130;
