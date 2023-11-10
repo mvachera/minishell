@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 20:05:17 by mvachera          #+#    #+#             */
-/*   Updated: 2023/10/25 20:06:26 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:09:48 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,15 @@ int	ft_handle_size(char *tab)
 	}
 	else if (ft_strlen(tab) > 3)
 	{
-		if (ft_strncmp("<<", tab, 2) == 0)
-		{
-			if (tab[2] == '|' || tab[3] == '|')
-				return (print_error_syntax('|', 0, 1), 2);
-		}
-		if (ft_strncmp("<<<", tab, 3) == 0)
-		{
-			if (tab[4] == '|')
-				return (print_error_syntax(tab[3], 0, 1), 2);
+		if (ft_strncmp("<<", tab, 2) == 0 && (tab[2] == '|' || tab[3] == '|'))
+			return (print_error_syntax('|', 0, 1), 2);
+		if ((ft_strncmp("<<<", tab, 3) == 0) && tab[4] == '|')
+			return (print_error_syntax(tab[3], 0, 1), 2);
+		if ((ft_strncmp("<<<", tab, 3) == 0) && tab[4] != '|')
 			return (print_error_syntax(tab[3], tab[4], 2), 2);
-		}
 		return (print_error_syntax(tab[2], tab[3], 2), 2);
 	}
+	if (ft_strncmp("<>", tab, 2) == 0)
+		return (print_error_syntax(tab[0], tab[1], 3), 2);
 	return (print_error_syntax(tab[0], 0, 1), 2);
 }

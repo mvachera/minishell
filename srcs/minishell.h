@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 21:02:16 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:35:25 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ typedef struct s_pipex
 
 	char	**tab;
 	int		*token;
-	char	**files;
-	int		*type;
 	int		*quote;
 	int		is_dollars;
-	int		is_quotes;
 	int		code_err;
 	int		count;
 }			t_pipex;
@@ -138,7 +135,7 @@ int			check_builtin(char *str);
 void		free_memory(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		free_files(t_pipex *pipex);
-void		free_exit(t_pipex *pipex);
+void		free_exit(t_pipex *pipex, char **arg, int nb_arg);
 char		**cpy_envp(char **envp);
 int			ft_strcmp(char *s1, char *s2);
 void		free_map(char **map_a_parser);
@@ -170,9 +167,11 @@ int			strange_char(char *str);
 char		*handle_strange(char *str);
 int			ft_strlen2(char *str);
 int			ft_strlen3(char *str);
+int			ft_strlen4(char *str);
 int			builtin_open_files(t_pipex *pipex);
 int			builtin_in_files(t_pipex *pipex);
 int			builtin_out_files(t_pipex *pipex);
 int			is_slash(char *str);
+void		parcours_last_command(t_pipex *pipex);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 18:25:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:03:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	main(int ac, char **av, char **envp)
 			return (-1);
 		str = readline("> ");
 		if (!str)
+			printf("exit\n");
+		if (!str)
 			break ;
-		if (str)
-			add_history(str);
+		add_history(str);
 		if (!*str)
 			continue ;
 		if (nb_quotes(str) == 0)

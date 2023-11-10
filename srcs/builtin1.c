@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 22:44:08 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 17:38:40 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	export_command(t_pipex *pipex, char *str)
 {
 	char	**new_envp;
 	int		env_count;
+	int		len_var;
 	int		i;
 
 	if (export_utils(str) == 1)
@@ -116,13 +117,14 @@ void	export_command(t_pipex *pipex, char *str)
 	if (!new_envp)
 		return ;
 	i = 0;
+	len_var = ft_strlen4(str);
 	while (pipex->envp[i])
 	{
-		// if (!ft_strcmp(str, pipex->envp[i], len_var)
-		// 	&& pipex->envp[i][len_var] == '=')
-		// 	i++;
-		// if (pipex->envp[i] == NULL)
-		// 	break ;
+		if (!ft_strncmp(str, pipex->envp[i], len_var)
+			&& pipex->envp[i][len_var] == '=')
+			i++;
+		if (pipex->envp[i] == NULL)
+			break ;
 		new_envp[i] = ft_strdup(pipex->envp[i]);
 		i++;
 	}

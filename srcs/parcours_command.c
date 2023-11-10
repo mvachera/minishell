@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 21:17:29 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:48:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,9 @@ void	parcours_cmd(t_pipex *pipex)
 				ft_printf("%s : command not found\n", pipex->tab[i]);
 			else if (!cmd && is_slash(pipex->tab[i]) == 1)
 				ft_printf("%s : No such file or directory\n", pipex->tab[i]);
-			else if (cmd)
+			else if (cmd && is_slash(pipex->tab[i]) == 1)
+				ft_printf("%s : Is a directory\n", pipex->tab[i]);
+			if (cmd)
 				free(cmd);
 			free_map(tab_tmp);
 			positif_to_negatif(pipex->tab[i]);

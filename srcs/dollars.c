@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 19:20:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 19:19:22 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:27:28 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ int	ft_strlen2(char *s)
 	size_t	i;
 
 	i = 0;
-	if (s == NULL)
-		return (0);
 	while (s[i] != '\0' && s[i] != ' ' && (s[i] < 9 || s[i] > 13))
 		i++;
 	return (i);

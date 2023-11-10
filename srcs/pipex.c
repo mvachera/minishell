@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 20:16:00 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:47:05 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int	main_pipex(char *str, t_pipex *pipex)
 		close(pipex->pipefd[0]);
 	if (pipex->here_doc == 1)
 		unlink(pipex->file_here_doc);
+	parcours_last_command(pipex);
 	free_memory(pipex);
 	free_map(pipex->cmd_args);
 	return (0);

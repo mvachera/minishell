@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/08 21:39:12 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/10 17:24:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	export_utils(char *str)
 
 	i = 0;
 	if (ft_strlen(str) == 1)
+		return (1);
+	if (str[0] == '=')
 		return (1);
 	while (str[i])
 	{
@@ -87,4 +89,14 @@ void	env_command(t_pipex *pipex)
 		write(1, "\n", 1);
 		i++;
 	}
+}
+
+int	ft_strlen4(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	return (i);
 }
