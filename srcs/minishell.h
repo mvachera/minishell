@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 19:35:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 22:06:10 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void		positif_to_negatif(char *str);
 void		clean_arg(char **tab);
 void		clear_all(t_pipex *pipex);
 int			check_random(t_pipex *pipex);
+int			check_token_kind(t_pipex *pipex, int i);
 int			check_first_str(char *str);
 int			is_meta_string(char *str);
 int			is_metacaractere(char c);
@@ -161,10 +162,12 @@ char		*handle_array_dollar(char **dst_tab, int d);
 int			get_nb_var(t_pipex *pipex, char **s, int d);
 int			is_dollars(char *str);
 char		*handle_interrogation(t_pipex *pipex, char *str);
+char		*strange_not_first(t_pipex *pipex, char *str, char *after_str,
+				int len);
 void		print_error_syntax(char c, char d, int i);
 int			ft_handle_size(char *tab);
 int			strange_char(char *str);
-char		*handle_strange(char *str);
+char		*handle_strange(t_pipex *pipex, char *str);
 int			ft_strlen2(char *str);
 int			ft_strlen3(char *str);
 int			ft_strlen4(char *str);
@@ -173,5 +176,6 @@ int			builtin_in_files(t_pipex *pipex);
 int			builtin_out_files(t_pipex *pipex);
 int			is_slash(char *str);
 void		parcours_last_command(t_pipex *pipex);
+int			in_env(t_pipex *pipex, char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:11:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 19:14:25 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 21:59:20 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@ int	check_random(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	if (ft_strcmp(pipex->tab[0], "|") == 0)
+	if (pipex->tab[0] && ft_strcmp(pipex->tab[0], "|") == 0)
 		return (pipex->code_err = 2,
-			ft_printf("syntax error near unexpected token `|'\n"), 1);
-	if (pipex->count == 1 && pipex->tab[0]
-		&& (pipex->tab[0][0] == '!' || pipex->tab[0][0] == ':'))
-	{
-		if (pipex->tab[0][0] == '!')
-			pipex->code_err = 1;
-		return (1);
-	}
+			print_error_syntax(pipex->tab[0][0], 0, 1), 1);
+	// if (pipex->count == 1 && pipex->tab[0] && pipex->tab[0][0] == '!')
+	// 	return (pipex->code_err = 1, 1);
+	// // if (pipex->count == 1 && pipex->tab[0] && pipex->tab[0][0] == ':')
+	// 	return (1);
+	// ft_printf("%s    : %d\n", pipex->tab[0], pipex->token[0]);
 	while (i < pipex->count)
 	{
 		if (pipex->token[i] == RANDOM && pipex->quote[i] == NO_QUOTE)
 			return (pipex->code_err = 2, ft_handle_size(pipex->tab[i]));
+		if (check_token_kind(pipex, i) == 1)
+			return (1);
 		i++;
 	}
 	if (pipex->token[pipex->count - 1] >= 0
 		&& pipex->token[pipex->count - 1] <= 4
 		&& pipex->quote[pipex->count - 1] == NO_QUOTE)
 		return (pipex->code_err = 2,
-			ft_printf("syntax error near unexpected token `newline'\n"), 1);
+			print_error_syntax(0, 0, 3), 1);
 	return (0);
 }
 

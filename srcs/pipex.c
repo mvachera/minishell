@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:40:46 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 18:47:05 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:55:01 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_cmd(char **tab2, t_pipex *pipex)
 	}
 	tab = find_path(pipex->envp);
 	if (!tab)
-		return (ft_printf("Function find path fail\n"), NULL);
+		return (NULL);
 	while (tab && tab[j])
 	{
 		pathcmd = ft_strjoin(tab[j], tab2[0]);

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:28:55 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 15:32:38 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 20:29:56 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,27 @@ void	new_tab(t_pipex *pipex, char **dst_tab, char **all_var)
 	int		j;
 	int		k;
 	int		len_var;
-	char	*tmp;
 
 	i = 0;
 	k = 0;
 	while (all_var[i])
 	{
-		tmp = NULL;
+		j = 0;
 		len_var = ft_strlen3(all_var[i]);
 		if (strange_char(all_var[i]) == 2)
-			tmp = handle_interrogation(pipex, all_var[i]);
+			dst_tab[k++] = handle_interrogation(pipex, all_var[i]);
 		else if (strange_char(all_var[i]) == 1)
-			tmp = ft_strdup(handle_strange(all_var[i]));
-		j = 0;
-		while (pipex->envp[j])
+			dst_tab[k++] = handle_strange(pipex, all_var[i]);
+		else
 		{
-			if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
-				&& pipex->envp[j][len_var] == '=')
+			while (pipex->envp[j])
 			{
-				if (tmp != NULL)
-					dst_tab[k] = str_johnny(pipex->envp[j]
-							+ len_var + 1, tmp);
-				else
-					dst_tab[k] = ft_strdup(pipex->envp[j] + len_var + 1);
+				if (ft_strncmp(pipex->envp[j], all_var[i], len_var) == 0
+					&& pipex->envp[j][len_var] == '=')
+						dst_tab[k++] = ft_strdup(pipex->envp[j] + len_var + 1);
+				j++;
 			}
-			j++;
 		}
-		if (dst_tab[k] == NULL && tmp != NULL)
-			dst_tab[k] = ft_strdup(tmp);
-		if (tmp != NULL)
-			free(tmp);
-		k++;
 		i++;
 	}
 }

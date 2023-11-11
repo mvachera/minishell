@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 17:38:40 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 21:27:28 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	echo_command(char **arg, int choice, int nb_arg)
 			write(1, "\n", 1);
 		return ;
 	}
-	if (choice == 0)
+	while (arg[i] && echo_first_arg(arg[i]) == 1)
 		i++;
 	while (i < nb_arg - 1)
 	{

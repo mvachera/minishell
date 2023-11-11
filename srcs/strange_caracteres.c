@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:07:05 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 18:23:06 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 20:29:21 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*handle_interrogation(t_pipex *pipex, char *str)
 	while (str[i] && str[i] != '?')
 		i++;
 	if (i != 0)
-		return (ft_strdup(str + i));
+		return (strange_not_first(pipex, str, str + i, i));
 	if (code_signal(0) == 130)
 	{
 		pipex->code_err = 130;
@@ -57,7 +57,22 @@ char	*handle_interrogation(t_pipex *pipex, char *str)
 	return (dst);
 }
 
-char	*handle_strange(char *str)
+char	*strange_not_first(t_pipex *pipex, char *str, char *after_str, int len)
+{
+	int		i;
+
+	i = 0;
+	while (pipex->envp[i])
+	{
+		if (ft_strncmp(pipex->envp[i], str, len) == 0
+			&& pipex->envp[i][len] == '=')
+			return (str_johnny(pipex->envp[i] + len + 1, after_str));
+		i++;
+	}
+	return (ft_strdup(after_str));
+}
+
+char	*handle_strange(t_pipex *pipex, char *str)
 {
 	int	i;
 
@@ -67,38 +82,8 @@ char	*handle_strange(char *str)
 		if (str[i] != '_' && str[i] != '?' && (str[i] < 'a' || str[i] > 'z')
 			&& (str[i] < 'A' || str[i] > 'Z')
 			&& (str[i] < '0' || str[i] > '9'))
-			return (str + i);
+			return (strange_not_first(pipex, str, str + i, i));
 		i++;
 	}
 	return (NULL);
-}
-
-int	is_slash(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '/')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_strlen3(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '_' && str[i] != '?' && (str[i] < 'a' || str[i] > 'z')
-			&& (str[i] < 'A' || str[i] > 'Z')
-			&& (str[i] < '0' || str[i] > '9'))
-			break ;
-		i++;
-	}
-	return (i);
 }

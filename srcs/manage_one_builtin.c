@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 19:46:20 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 21:57:27 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,8 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	tmp[0] = dup(0);
 	tmp[1] = dup(1);
 	if (builtin_open_files(pipex) == 0)
-	{
-		dup2(tmp[0], 0);
-		dup2(tmp[1], 1);
-		close(tmp[0]);
-		close(tmp[1]);
-		return (1);
-	}
+		return (dup2(tmp[0], 0), dup2(tmp[1], 1),
+			close(tmp[0]), close(tmp[1]), 1);
 	dup2(tmp[0], 0);
 	dup2(tmp[1], 1);
 	close(tmp[0]);

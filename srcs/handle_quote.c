@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 21:01:58 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:50:10 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_quotes(char **tab, t_pipex *pipex)
 	while (i < pipex->count)
 	{
 		pipex->quote[i] = NO_QUOTE;
-		if (find_quotes(tab[i]) != 0 && ft_strcmp(tab[i], "\"\"") != 0
+		if (tab[i] && find_quotes(tab[i]) != 0 && ft_strcmp(tab[i], "\"\"") != 0
 			&& ft_strcmp(tab[i], "''") != 0)
 		{
 			if (find_quotes(tab[i]) == 1)
