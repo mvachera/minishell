@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 21:57:27 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 06:11:21 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	handle_builtin(t_pipex *pipex, char *str)
 {
 	int	i;
-	int	tmp[2];
 
 	i = 0;
 	pipex->code_err = 0;
@@ -23,19 +22,20 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	if (pipex->cmd_count != 1 || is_builtin(pipex) == 0)
 		return (0);
 	parcours_cmd2(pipex);
-	tmp[0] = dup(0);
-	tmp[1] = dup(1);
+	pipex->tmp[0] = dup(0);
+	pipex->tmp[1] = dup(1);
 	if (builtin_open_files(pipex) == 0)
-		return (dup2(tmp[0], 0), dup2(tmp[1], 1),
-			close(tmp[0]), close(tmp[1]), 1);
-	dup2(tmp[0], 0);
-	dup2(tmp[1], 1);
-	close(tmp[0]);
-	close(tmp[1]);
+		return (dup2(pipex->tmp[0], 0), dup2(pipex->tmp[1], 1),
+			close(pipex->tmp[0]), close(pipex->tmp[1]),
+			1);
 	while (i < pipex->count)
 	{
 		if (pipex->token[i] == BUILTIN)
-			return (execute_builtin(pipex->tab[i], pipex, 0, 0), 1);
+		{
+			execute_builtin(pipex->tab[i], pipex, 0, 0);
+			return (dup2(pipex->tmp[0], 0), dup2(pipex->tmp[1], 1),
+				close(pipex->tmp[0]), close(pipex->tmp[1]), 1);
+		}
 		i++;
 	}
 	return (0);
@@ -55,7 +55,7 @@ int	is_builtin(t_pipex *pipex)
 	return (0);
 }
 
-void	handle_exit(t_pipex *pipex, char **arg, int nb_arg)
+void	handle_exit(t_pipex *pipex, char **arg, int nb_arg, int to_free)
 {
 	int	i;
 
@@ -78,7 +78,7 @@ void	handle_exit(t_pipex *pipex, char **arg, int nb_arg)
 		pipex->code_err = 2;
 		ft_printf("exit : %s : numeric argument required\n", arg[0]);
 	}
-	free_exit(pipex, arg, nb_arg);
+	free_exit(pipex, arg, nb_arg, to_free);
 	exit(pipex->code_err);
 }
 

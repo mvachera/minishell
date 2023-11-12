@@ -6,28 +6,11 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 20:58:56 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 07:49:22 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	check_here_doc(t_pipex *pipex)
-{
-	int	i;
-
-	i = 0;
-	while (i < pipex->count)
-	{
-		if (pipex->token[i] == HERE_DOC)
-		{
-			pipex->here_doc = 1;
-			pipex->file_here_doc = "here_doc";
-			pipex->limiteur = pipex->tab[i];
-		}
-		i++;
-	}
-}
 
 void	openfiles(t_pipex *pipex, int index)
 {
@@ -42,68 +25,65 @@ void	openfiles(t_pipex *pipex, int index)
 			j++;
 		else if (j == index)
 		{
-			handle_in_files(pipex, i);
-			handle_out_files(pipex, i);
+			handle_files(pipex, i);
 			break ;
 		}
 		i++;
 	}
 }
 
-void	handle_in_files(t_pipex *pipex, int i)
+void	handle_files(t_pipex *pipex, int i)
 {
 	while (i > 0 && pipex->token[i] != PIPE)
 		i--;
 	i++;
 	while (i < pipex->count && pipex->token[i] != PIPE)
 	{
-		if (pipex->token[i] == IN_FILES || pipex->token[i] == HERE_DOC)
-		{
-			if (pipex->token[i] == IN_FILES)
-				pipex->fd = open(pipex->tab[i], O_RDONLY);
-			else if (pipex->token[i] == HERE_DOC)
-				pipex->fd = open(pipex->file_here_doc, O_RDONLY);
-			if (pipex->fd == -1)
-			{
-				ft_printf("%s : %s\n", pipex->tab[i], strerror(errno));
-				free_pipex(pipex);
-				pipex->code_err = 126;
-				exit(1);
-			}
-			dup2(pipex->fd, 0);
-			close(pipex->fd);
-		}
+		if (pipex->token[i] == OUT_FILES || pipex->token[i] == IN_FILES
+			|| pipex->token[i] == HERE_DOC)
+			handle_files2(pipex, i);
 		i++;
 	}
+	close_hdocs(pipex->hdocs, pipex->nbhdocs);
 }
 
-void	handle_out_files(t_pipex *pipex, int i)
+void	handle_files2(t_pipex *pipex, int i)
 {
-	while (i > 0 && pipex->token[i] != PIPE)
-		i--;
-	i++;
-	while (i < pipex->count && pipex->token[i] != PIPE)
+	if (i != 0 && pipex->token[i - 1] == CHEVRON_D)
+		pipex->fd = open(pipex->tab[i], O_CREAT | O_RDWR | O_TRUNC, 0666);
+	if (i != 0 && pipex->token[i - 1] == D_CHEVRON_D)
+		pipex->fd = open(pipex->tab[i], O_CREAT | O_RDWR | O_APPEND, 0666);
+	if (pipex->token[i] == IN_FILES)
+		pipex->fd = open(pipex->tab[i], O_RDONLY);
+	if (pipex->token[i] == HERE_DOC)
+		pipex->fd = getpipe(pipex->hdocs, pipex->tab[i]);
+	if (pipex->fd == -1)
 	{
-		if (pipex->token[i] == OUT_FILES)
-		{
-			if (i != 0 && pipex->token[i - 1] == CHEVRON_D)
-				pipex->fd = open(pipex->tab[i],
-						O_CREAT | O_RDWR | O_TRUNC, 0666);
-			else if (i != 0 && pipex->token[i - 1] == D_CHEVRON_D)
-				pipex->fd = open(pipex->tab[i],
-						O_CREAT | O_RDWR | O_APPEND, 0666);
-			if (pipex->fd == -1)
-			{
-				ft_printf("%s : %s\n", pipex->tab[i], strerror(errno));
-				free_pipex(pipex);
-				pipex->code_err = 126;
-				exit(1);
-			}
-			dup2(pipex->fd, 1);
-			close(pipex->fd);
-		}
+		ft_printf("%s : %s\n", pipex->tab[i], strerror(errno));
+		free_pipex(pipex);
+		pipex->code_err = 126;
+		exit(1);
+	}
+	if (pipex->token[i] == OUT_FILES)
+		dup2(pipex->fd, 1);
+	if (pipex->token[i] == IN_FILES || pipex->token[i] == HERE_DOC)
+		dup2(pipex->fd, 0);
+	if (pipex->token[i] != HERE_DOC)
+		close(pipex->fd);
+}
+
+int	getpipe(t_here *hd, char *file)
+{
+	int	i;
+
+	i = 0;
+	while (i < hd->nbhdocs)
+	{
+		if (!ft_strcmp(hd[i].limit, file))
+			return (hd[i].fd[0]);
 		i++;
 	}
+	return (-1);
 }
 
 // void	openfiles(t_pipex *pipex, int i)

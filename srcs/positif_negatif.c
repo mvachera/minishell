@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 19:48:44 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/07 21:10:21 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 06:51:22 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,20 @@ void	clean_arg(char **tab)
 	{
 		if (is_negatif(tab[i]) == 0)
 			negatif_to_positif(tab[i]);
+		i++;
+	}
+}
+
+void	clear_all(t_pipex *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->tab[i])
+	{
+		if (is_negatif(pipex->tab[i]) == 0 && pipex->token[i] != COMMAND
+			&& pipex->token[i] != BUILTIN && pipex->token[i] != ARGUMENT)
+			negatif_to_positif(pipex->tab[i]);
 		i++;
 	}
 }

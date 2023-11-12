@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 18:58:13 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 06:52:50 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 
 void	create_tab(char *str, t_pipex *pipex)
 {
-	if (signal(SIGINT, &ft_interrupt) == 0)
-	{
-		pipex->code_err = 255;
-		return ;
-	}
-	count_nb_tab(str, pipex, 0);
+	create_tab2(pipex, str);
 	if (pipex->count == 0)
 		return ;
 	pipex->tab = ft_calloc(sizeof(char *), (pipex->count + 1));
@@ -40,8 +35,20 @@ void	create_tab(char *str, t_pipex *pipex)
 		return (free(pipex->quote), free_memory(pipex));
 	free(pipex->quote);
 	clear_all(pipex);
+	here_doc(pipex);
 	if (handle_builtin(pipex, str) == 0)
 		main_pipex(str, pipex);
+	close_hdocs(pipex->hdocs, pipex->nbhdocs);
+}
+
+void	create_tab2(t_pipex *pipex, char *str)
+{
+	if (signal(SIGINT, &ft_interrupt) == 0)
+	{
+		pipex->code_err = 255;
+		return ;
+	}
+	count_nb_tab(str, pipex, 0);
 }
 
 void	count_nb_tab(char *str, t_pipex *pipex, int i)
@@ -120,19 +127,5 @@ void	extract_to_tab2(char *str, int *i, int *j)
 	{
 		while (is_metacaractere(str[*j]) == 0 && str[*j])
 			(*j)++;
-	}
-}
-
-void	clear_all(t_pipex *pipex)
-{
-	int	i;
-
-	i = 0;
-	while (pipex->tab[i])
-	{
-		if (is_negatif(pipex->tab[i]) == 0 && pipex->token[i] != COMMAND
-			&& pipex->token[i] != BUILTIN && pipex->token[i] != ARGUMENT)
-			negatif_to_positif(pipex->tab[i]);
-		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 21:27:28 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 08:22:01 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,7 @@ void	cd_command(t_pipex *pipex, char *path)
 	char	*absolu;
 
 	if (path[0] == '/')
-	{
-		if (chdir(path) == -1)
-		{
-			pipex->code_err = 1;
-			ft_printf("cd : %s\n", strerror(errno));
-		}
-		return ;
-	}
+		return (cd_command2(pipex, path));
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return (perror("getcwd"));
 	cwd2 = ft_strdup(cwd);
@@ -118,17 +111,7 @@ void	export_command(t_pipex *pipex, char *str)
 		return ;
 	i = 0;
 	len_var = ft_strlen4(str);
-	while (pipex->envp[i])
-	{
-		if (!ft_strncmp(str, pipex->envp[i], len_var)
-			&& pipex->envp[i][len_var] == '=')
-			i++;
-		if (pipex->envp[i] == NULL)
-			break ;
-		new_envp[i] = ft_strdup(pipex->envp[i]);
-		i++;
-	}
-	new_envp[i] = ft_strdup(str);
+	export_command2(pipex, new_envp, str, len_var);
 	free_map(pipex->envp);
 	pipex->envp = new_envp;
 	pipex->code_err = 0;

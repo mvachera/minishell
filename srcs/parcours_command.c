@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:03:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 22:15:54 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 07:58:18 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,7 @@ void	parcours_cmd(t_pipex *pipex)
 			tab_tmp = ft_split(pipex->tab[i], ' ');
 			cmd = get_cmd(tab_tmp, pipex);
 			negatif_to_positif(pipex->tab[i]);
-			if (!cmd)
-				pipex->code_err = 127;
-			if (!cmd && errno == 13)
-				ft_printf("%s : Permission denied\n", pipex->tab[i]);
-			else if (!cmd && is_slash(pipex->tab[i]) == 0)
-				ft_printf("%s : command not found\n", pipex->tab[i]);
-			else if (!cmd && is_slash(pipex->tab[i]) == 1)
-				ft_printf("%s : No such file or directory\n", pipex->tab[i]);
-			else if (cmd && is_slash(pipex->tab[i]) == 1
-				&& in_env(pipex, pipex->tab[i]) == 1)
-				ft_printf("%s : Is a directory\n", pipex->tab[i]);
+			parcours_cmd3(pipex, cmd, i);
 			if (cmd)
 				free(cmd);
 			free_map(tab_tmp);

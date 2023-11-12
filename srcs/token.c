@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:43:33 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/09 21:00:24 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 05:55:04 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ void	sort_token(t_pipex *pipex, char **tab, int *token, int *quote)
 				|| quote[i] == SINGLE_QUOTE || quote[i] == DOUBLE_QUOTES))
 			token[i] = ARGUMENT;
 		else
-			sort_token2(tab, token, i);
+			sort_token2(pipex, tab, token, i);
 		i++;
 	}
 }
 
-void	sort_token2(char **tab, int *token, int i)
+void	sort_token2(t_pipex *pipex, char **tab, int *token, int i)
 {
 	if (check_builtin(tab[i]) == 1)
 		token[i] = BUILTIN;
+	else if (pipex->quote[i] == NO_QUOTE && is_meta_string(tab[i]) == 1)
+			token[i] = RANDOM;
 	else if (i != 0 && token[i - 1] == D_CHEVRON_G)
 			token[i] = HERE_DOC;
 	else if (i != 0 && token[i - 1] == CHEVRON_G)
@@ -52,17 +54,15 @@ void	sort_token2(char **tab, int *token, int i)
 	else if (i != 0 && (token[i - 1] == CHEVRON_D
 			|| token[i - 1] == D_CHEVRON_D))
 			token[i] = OUT_FILES;
-	else if (is_meta_string(tab[i]) == 0)
-			token[i] = COMMAND;
 	else
-			token[i] = RANDOM;
+			token[i] = COMMAND;
 }
 
 int	check_builtin(char *str)
 {
 	if (ft_strcmp(str, "echo") == 0)
 		return (1);
-	else if (ft_strcmp(str, "cd") == 0)
+	if (ft_strcmp(str, "cd") == 0)
 		return (1);
 	else if (ft_strcmp(str, "pwd") == 0)
 		return (1);

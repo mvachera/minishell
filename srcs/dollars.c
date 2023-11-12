@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 19:20:50 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 18:45:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 06:22:35 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,4 @@ void	manage_dollars3(t_pipex *pipex, char *tmp, char *tmp_before, int i)
 		return ;
 	}
 	free(tmp);
-}
-
-int	ft_strlen2(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0' && s[i] != ' ' && (s[i] < 9 || s[i] > 13))
-		i++;
-	return (i);
 }

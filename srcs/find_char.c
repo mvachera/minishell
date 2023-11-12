@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   find_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 07:53:45 by mvachera         ###   ########.fr       */
+/*   Created: 2023/11/12 06:46:52 by mvachera          #+#    #+#             */
+/*   Updated: 2023/11/12 08:16:35 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **envp)
+int	is_dollars(char *str)
 {
-	static t_pipex	pipex = {0};
-	char			*str;
+	int	i;
 
-	if (start_main(ac, &pipex, av, envp) == 2)
-		return (2);
-	while (1)
+	i = 0;
+	while (str[i])
 	{
-		if (capt_sign() == -1)
-			return (-1);
-		str = readline("> ");
-		if (!str)
-			printf("exit\n");
-		if (!str)
-			break ;
-		add_history(str);
-		if (!*str)
-			continue ;
-		if (nb_quotes(str) == 0)
-		{
-			str = tonegatif(&pipex, str);
-			create_tab(str, &pipex);
-		}
+		if (str[i] == '$')
+			return (1);
+		i++;
 	}
-	free_map(pipex.envp);
+	return (0);
+}
+
+int	is_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
 }

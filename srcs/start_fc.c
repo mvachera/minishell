@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:20:53 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 19:23:44 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 07:52:16 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,11 @@ char	*tonegatif(t_pipex *pipex, char *str)
 	return (str);
 }
 
-int	start_main(int ac, t_pipex *pipex, char **envp)
+int	start_main(int ac, t_pipex *pipex, char **av, char **envp)
 {
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &ctrlc);
+	(void)av;
 	if (ac != 1)
 		return (2);
 	pipex->envp = cpy_envp(envp);

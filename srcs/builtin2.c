@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 17:24:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 06:28:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,24 @@ int	export_utils(char *str)
 		i++;
 	}
 	return (0);
+}
+
+void	export_command2(t_pipex *pipex, char **new_envp, char *str, int len_var)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->envp[i])
+	{
+		if (!ft_strncmp(str, pipex->envp[i], len_var)
+			&& pipex->envp[i][len_var] == '=')
+			i++;
+		if (pipex->envp[i] == NULL)
+			break ;
+		new_envp[i] = ft_strdup(pipex->envp[i]);
+		i++;
+	}
+	new_envp[i] = ft_strdup(str);
 }
 
 int	check_unset(char *var, t_pipex *pipex, int len_var)
@@ -85,18 +103,8 @@ void	env_command(t_pipex *pipex)
 	i = 0;
 	while (pipex->envp && pipex->envp[i])
 	{
-		write(1, pipex->envp[i], strlen(pipex->envp[i]));
+		write(1, pipex->envp[i], ft_strlen(pipex->envp[i]));
 		write(1, "\n", 1);
 		i++;
 	}
-}
-
-int	ft_strlen4(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
-		i++;
-	return (i);
 }

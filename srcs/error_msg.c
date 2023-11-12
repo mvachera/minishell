@@ -6,11 +6,52 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 20:05:17 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/10 19:09:48 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 08:16:10 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_random(t_pipex *pipex)
+{
+	int	i;
+
+	i = 0;
+	if (pipex->tab[0] && pipex->quote[i] == NO_QUOTE && ft_strcmp(pipex->tab[0],
+			"|") == 0)
+		return (pipex->code_err = 2,
+			print_error_syntax(pipex->tab[0][0], 0, 1),
+				1);
+	while (i < pipex->count)
+	{
+		if (check_random2(pipex, i) != 0)
+			return (1);
+		i++;
+	}
+	if (pipex->token[pipex->count - 1] >= 0 && pipex->token[pipex->count - 1]
+		<= 4 && pipex->quote[pipex->count - 1] == NO_QUOTE)
+		return (pipex->code_err = 2,
+			print_error_syntax(0, 0, 3), 1);
+	return (0);
+}
+
+int	check_random2(t_pipex *pipex, int i)
+{
+	if (pipex->token[i] == RANDOM && pipex->quote[i] == NO_QUOTE)
+		return (pipex->code_err = 2, ft_handle_size(pipex->tab[i]));
+	if (check_token_kind(pipex, i) == 1)
+		return (1);
+	if (pipex->token[i] > 0 && pipex->token[i] < 5)
+	{
+		if (i + 1 < pipex->count && pipex->tab[i] == NULL)
+			return (ft_printf("ambiguous redirect\n"), 1);
+		else if (pipex->tab[i + 1] && pipex->token[i + 1] >= 0
+			&& pipex->token[i + 1] <= 4)
+			return (ft_printf("syntax error near unexpected token %s\n",
+					pipex->tab[i + 1]), 1);
+	}
+	return (0);
+}
 
 void	print_error_syntax(char c, char d, int i)
 {

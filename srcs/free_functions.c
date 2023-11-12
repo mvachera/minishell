@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 21:05:05 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/12 01:35:48 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	free_pipex(t_pipex *pipex)
 		free_map(pipex->envp);
 }
 
-void	free_exit(t_pipex *pipex, char **arg, int nb_arg)
+void	free_exit(t_pipex *pipex, char **arg, int nb_arg, int to_free)
 {
 	int	i;
 
@@ -63,7 +63,7 @@ void	free_exit(t_pipex *pipex, char **arg, int nb_arg)
 		i++;
 	}
 	i = 0;
-	if (pipex->cmd_args != NULL)
+	if (to_free == 1 && pipex->cmd_args != NULL)
 	{
 		while (i < pipex->cmd_count)
 			free(pipex->cmd_args[i++]);
@@ -74,6 +74,9 @@ void	free_exit(t_pipex *pipex, char **arg, int nb_arg)
 	if (pipex->envp != NULL)
 		free_map(pipex->envp);
 	free_memory(pipex);
+	if (to_free == 0)
+		return (dup2(pipex->tmp[0], 0), dup2(pipex->tmp[1], 1),
+			close(pipex->tmp[0]), close(pipex->tmp[1]), (void)i);
 }
 
 int	check_token_kind(t_pipex *pipex, int i)
