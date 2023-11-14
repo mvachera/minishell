@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 18:07:05 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 20:29:21 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:11:22 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ char	*handle_interrogation(t_pipex *pipex, char *str)
 	if (!dst)
 		return (free(code_error), NULL);
 	free(code_error);
-	pipex->code_err = 0;
 	return (dst);
 }
 
@@ -86,4 +85,11 @@ char	*handle_strange(t_pipex *pipex, char *str)
 		i++;
 	}
 	return (NULL);
+}
+
+char	*vide(char *str)
+{
+	while (str && *str && (*str == ' ' || *str == '\t'))
+		str++;
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:00:11 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 07:28:51 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:15:37 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,30 @@ void	execute_builtin2(char *str, t_pipex *pipex, char **arg, int nb_arg)
 
 void	execute_builtin3(char *str, t_pipex *pipex, char **arg, int nb_arg)
 {
+	int	i;
+
+	i = 0;
 	if (ft_strcmp(str, "export") == 0)
 	{
 		if (nb_arg == 0)
 			env_command(pipex);
 		else
-			export_command(pipex, arg[0]);
+		{
+			while (i < nb_arg)
+			{
+				export_command(pipex, arg[i]);
+				i++;
+			}
+		}
 	}
 	else if (ft_strcmp(str, "unset") == 0 && nb_arg > 0)
-		unset_command(arg[0], pipex);
+	{
+		while (i < nb_arg)
+		{
+			unset_command(arg[i], pipex);
+			i++;
+		}
+	}
 }
 
 char	**get_arg(t_pipex *pipex, int nb_arg, int index)

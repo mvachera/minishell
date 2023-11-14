@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:54:57 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 07:53:45 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:11:05 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	static t_pipex	pipex = {0};
-	char			*str;
+	t_pipex	*pipex;
+	char	*str;
 
-	if (start_main(ac, &pipex, av, envp) == 2)
+	pipex = starton();
+	if (start_main(ac, pipex, av, envp) == 2)
 		return (2);
 	while (1)
 	{
@@ -25,17 +26,17 @@ int	main(int ac, char **av, char **envp)
 			return (-1);
 		str = readline("> ");
 		if (!str)
-			printf("exit\n");
-		if (!str)
 			break ;
-		add_history(str);
 		if (!*str)
 			continue ;
+		add_history(str);
+		str = vide(str);
 		if (nb_quotes(str) == 0)
 		{
-			str = tonegatif(&pipex, str);
-			create_tab(str, &pipex);
+			str = tonegatif(pipex, str);
+			create_tab(str, pipex);
 		}
 	}
-	free_map(pipex.envp);
+	printf("exit\n");
+	free_map(pipex->envp);
 }

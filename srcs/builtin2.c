@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:20:40 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 06:28:08 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:20:34 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,38 @@ int	export_utils(char *str)
 	{
 		if (str[i] == '=')
 			return (0);
-		if (str[i] == '-')
+		if (str[i] == '-' || str[i] == '^' || str[i] == '+')
 			return (1);
 		if (str[i] >= '0' && str[i] <= '9')
 			return (1);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 void	export_command2(t_pipex *pipex, char **new_envp, char *str, int len_var)
 {
+	int	a;
 	int	i;
 
+	a = 0;
 	i = 0;
 	while (pipex->envp[i])
 	{
 		if (!ft_strncmp(str, pipex->envp[i], len_var)
 			&& pipex->envp[i][len_var] == '=')
+		{
+			new_envp[i] = ft_strdup(str);
+			a = 1;
 			i++;
+		}
 		if (pipex->envp[i] == NULL)
 			break ;
 		new_envp[i] = ft_strdup(pipex->envp[i]);
 		i++;
 	}
-	new_envp[i] = ft_strdup(str);
+	if (a == 0)
+		new_envp[i] = ft_strdup(str);
 }
 
 int	check_unset(char *var, t_pipex *pipex, int len_var)

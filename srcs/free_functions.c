@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:06:51 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 01:35:48 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:59:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void	free_pipex(t_pipex *pipex)
 	if (pipex->cmd_args != NULL)
 	{
 		while (i < pipex->cmd_count)
-			free(pipex->cmd_args[i++]);
+		{
+			if (pipex->cmd_args[i])
+				free(pipex->cmd_args[i]);
+			i++;
+		}
 		free(pipex->cmd_args);
 	}
 	if (pipex->envp != NULL)

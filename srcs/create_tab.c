@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:42:31 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 06:52:50 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:04:53 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	create_tab(char *str, t_pipex *pipex)
 	if (!pipex->token)
 		return (free_map(pipex->tab));
 	sort_token(pipex, pipex->tab, pipex->token, pipex->quote);
-	if (check_random(pipex) != 0)
+	if (check_random(pipex, 0) != 0)
 		return (free(pipex->quote), free_memory(pipex));
 	free(pipex->quote);
 	clear_all(pipex);
@@ -43,7 +43,7 @@ void	create_tab(char *str, t_pipex *pipex)
 
 void	create_tab2(t_pipex *pipex, char *str)
 {
-	if (signal(SIGINT, &ft_interrupt) == 0)
+	if (signal(SIGINT, &ctrlc) == 0)
 	{
 		pipex->code_err = 255;
 		return ;

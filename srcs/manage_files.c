@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:58:15 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 07:49:22 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:06:03 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,32 @@ void	handle_files2(t_pipex *pipex, int i)
 		close(pipex->fd);
 }
 
+void	here_doc(t_pipex *pipex)
+{
+	int	pid;
+	int	i;
+
+	pipex->nbhdocs = count_hdocs(pipex);
+	if (!pipex->nbhdocs)
+		return ;
+	pipex->hdocs = ft_calloc(sizeof(t_here), pipex->nbhdocs);
+	if (!pipex->hdocs)
+		return ;
+	remplissage_hdocs(pipex->hdocs, pipex->nbhdocs, pipex);
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid == 0)
+		fork_hdocs(pipex, pipex->hdocs);
+	else if (pid > 0)
+	{
+		i = 0;
+		while (i < pipex->nbhdocs)
+			close(pipex->hdocs[i++].fd[1]);
+	}
+	signal(SIGINT, &ctrlc);
+	wait(NULL);
+}
+
 int	getpipe(t_here *hd, char *file)
 {
 	int	i;
@@ -85,68 +111,3 @@ int	getpipe(t_here *hd, char *file)
 	}
 	return (-1);
 }
-
-// void	openfiles(t_pipex *pipex, int i)
-// {
-// 	mallocfichiers(pipex);
-// 	while (pipex->files[i])
-// 	{
-// 		if (pipex->type[i] == CHEVRON_G)
-// 			pipex->fd = open(pipex->files[i], O_RDONLY);
-// 		else if (pipex->type[i] == D_CHEVRON_G)
-// 			pipex->fd = open(pipex->file_here_doc, O_RDONLY);
-// 		else if (pipex->type[i] == CHEVRON_D)
-// 			pipex->fd = open(pipex->files[i], O_CREAT | O_RDWR | O_TRUNC, 0666);
-// 		else if (pipex->type[i] == D_CHEVRON_D)
-// 			pipex->fd = open(pipex->files[i], O_CREAT | O_RDWR
-// 					| O_APPEND, 0666);
-// 		if (pipex->fd == -1)
-// 		{
-// 			ft_printf("%s : No such file or directory\n", pipex->files[i]);
-// 			free_files(pipex);
-// 			free_pipex(pipex);
-// 			exit(1);
-// 		}
-// 		openfiles2(pipex, i);
-// 		close(pipex->fd);
-// 		i++;
-// 	}
-// 	free_files(pipex);
-// }
-
-// void	openfiles2(t_pipex *pipex, int i)
-// {
-// 	if (pipex->type[i] == CHEVRON_G || pipex->type[i] == D_CHEVRON_G)
-// 		dup2(pipex->fd, 0);
-// 	else
-// 		dup2(pipex->fd, 1);
-// }
-
-// void	mallocfichiers(t_pipex *pipex)
-// {
-// 	int		i[2];
-
-// 	i[0] = 0;
-// 	i[1] = 0;
-// 	while (pipex->tab[i[0]])
-// 	{
-// 		if (pipex->token[i[0]] == IN_FILES || pipex->token[i[0]] == OUT_FILES
-// 			|| pipex->token[i[0]] == HERE_DOC)
-// 			i[1]++;
-// 		i[0]++;
-// 	}
-// 	pipex->files = ft_calloc(sizeof(char *), i[1] + 1);
-// 	pipex->type = ft_calloc(sizeof(int), i[1]);
-// 	i[0] = 0;
-// 	i[1] = 0;
-// 	while (pipex->tab[i[0]])
-// 	{
-// 		if (pipex->token[i[0]] == IN_FILES || pipex->token[i[0]] == OUT_FILES
-// 			|| pipex->token[i[0]] == HERE_DOC)
-// 		{
-// 			pipex->files[i[1]] = ft_strdup(pipex->tab[i[0]]);
-// 			pipex->type[i[1]++] = pipex->token[i[0] - 1];
-// 		}
-// 		i[0]++;
-// 	}
-// }

@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 01:51:47 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 06:08:53 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:05:57 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,40 @@ void	remplissage_hdocs(t_here *here, int nbhdocs, t_pipex *pipex)
 	}
 }
 
+static void	exit_hd(int sig)
+{
+	t_pipex	*pipex;
+	int		i;
+
+	pipex = starton();
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', 2);
+		i = -1;
+		while (++i < pipex->nbhdocs)
+		{
+			close(pipex->hdocs[i].fd[1]);
+			close(pipex->hdocs[i].fd[0]);
+		}
+		free_memory(pipex);
+		free_map(pipex->envp);
+		free(pipex->hdocs);
+		exit(130);
+	}
+}
+
 void	fork_hdocs(t_pipex *pipex, t_here *hd)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
+	signal(SIGINT, &exit_hd);
 	while (i < hd->nbhdocs)
 	{
 		while (1)
 		{
-			str = readline("hdocs> ");
+			str = readline("heredoc> ");
 			if (!str || !ft_strcmp(hd[i].limit, str))
 				break ;
 			ft_putendl_fd(str, hd[i].fd[1]);
@@ -83,28 +106,4 @@ void	fork_hdocs(t_pipex *pipex, t_here *hd)
 	free_map(pipex->envp);
 	free(hd);
 	exit(0);
-}
-
-void	here_doc(t_pipex *pipex)
-{
-	int	pid;
-	int	i;
-
-	pipex->nbhdocs = count_hdocs(pipex);
-	if (!pipex->nbhdocs)
-		return ;
-	pipex->hdocs = ft_calloc(sizeof(t_here), pipex->nbhdocs);
-	remplissage_hdocs(pipex->hdocs, pipex->nbhdocs, pipex);
-	pid = fork();
-	if (pid == 0)
-	{
-		fork_hdocs(pipex, pipex->hdocs);
-	}
-	else if (pid > 0)
-	{
-		i = 0;
-		while (i < pipex->nbhdocs)
-			close(pipex->hdocs[i++].fd[1]);
-	}
-	wait(NULL);
 }

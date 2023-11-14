@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 06:11:21 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:43:36 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	handle_exit(t_pipex *pipex, char **arg, int nb_arg, int to_free)
 		pipex->code_err = 156;
 	else if (nb_arg == 1 && is_numeric_string(arg[0]) == 3)
 		pipex->code_err = ft_atoi(arg[0]);
-	else if (nb_arg > 0 && is_numeric_string(arg[0]) == 0)
+	else if (nb_arg > 0 && (is_numeric_string(arg[0]) == 0))
 	{
 		pipex->code_err = 2;
 		ft_printf("exit : %s : numeric argument required\n", arg[0]);

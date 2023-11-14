@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 08:22:51 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:09:19 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ enum		e_token
 	EMPTY,
 };
 
+t_pipex		*starton(void);
+
 int			main_pipex(char *str, t_pipex *pipex);
 int			ft_exec(t_pipex *pipex);
 void		child_process(t_pipex *pipex, int index);
@@ -120,7 +122,6 @@ int			capt_sign(void);
 int			nb_quotes(char *str);
 int			code_signal(int b);
 void		ft_react_to_signal(int sig);
-void		ft_interrupt(int sig);
 void		create_tab(char *str, t_pipex *pipex);
 void		create_tab2(t_pipex *pipex, char *str);
 void		count_nb_tab(char *str, t_pipex *pipex, int i);
@@ -136,8 +137,9 @@ void		negatif_to_positif(char *str);
 void		positif_to_negatif(char *str);
 void		clean_arg(char **tab);
 void		clear_all(t_pipex *pipex);
-int			check_random(t_pipex *pipex);
+int			check_random(t_pipex *pipex, int i);
 int			check_random2(t_pipex *pipex, int i);
+int			check_base_directory(t_pipex *pipex);
 int			check_token_kind(t_pipex *pipex, int i);
 int			check_first_str(char *str);
 int			is_meta_string(char *str);
@@ -192,15 +194,16 @@ int			is_slash(char *str);
 void		parcours_last_command(t_pipex *pipex);
 void		parcours_last_command2(t_pipex *pipex, char *cmd, int i);
 int			in_env(t_pipex *pipex, char *str);
+char		*vide(char *str);
 
 void		waitfunction(t_pipex *pipex);
 void		antislash(int sig);
 void		ctrlc(int sig);
 void		here_doc(t_pipex *pipex);
 void		fork_hdocs(t_pipex *pipex, t_here *hd);
+void		remplissage_hdocs(t_here *here, int nbhdocs, t_pipex *pipex);
 int			count_hdocs(t_pipex *pipex);
 void		close_hdocs(t_here *hd, int size);
 int			getpipe(t_here *hd, char *file);
-void		remplissage_hdocs(t_here *here, int nbhdocs, t_pipex *pipex);
 
 #endif
