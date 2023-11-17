@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:09:48 by mvachera          #+#    #+#             */
-/*   Updated: 2023/05/08 20:34:31 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:48:42 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	ft_atoi(const char *nptr)
 	if (nptr[i] == '\0')
 		return (0);
 	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
-	{
 		i++;
-	}
 	if (nptr[i] == '+' || nptr[i] == '-')
 	{
 		if (nptr[i] == '-')
