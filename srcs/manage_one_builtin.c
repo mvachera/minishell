@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 18:01:39 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/15 14:49:26 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:58:38 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	int	i;
 
 	i = 0;
-	pipex->code_err = 0;
+	if (ft_strcmp(str, "exit") != 0)
+		pipex->code_err = 0;
 	pipex->cmd_count = ft_count(str, '|');
 	if (pipex->cmd_count != 1 || is_builtin(pipex) == 0)
 		return (0);
@@ -26,8 +27,7 @@ int	handle_builtin(t_pipex *pipex, char *str)
 	pipex->tmp[1] = dup(1);
 	if (builtin_open_files(pipex) == 0)
 		return (dup2(pipex->tmp[0], 0), dup2(pipex->tmp[1], 1),
-			close(pipex->tmp[0]), close(pipex->tmp[1]),
-			1);
+			close(pipex->tmp[0]), close(pipex->tmp[1]), 1);
 	while (i < pipex->count)
 	{
 		if (pipex->token[i] == BUILTIN)
@@ -73,7 +73,7 @@ void	handle_exit(t_pipex *pipex, char **arg, int nb_arg, int to_free)
 		pipex->code_err = 156;
 	else if (nb_arg == 1 && is_numeric_string(arg[0]) == 3)
 		pipex->code_err = ft_atoi(arg[0]);
-	else if (nb_arg > 0 && is_numeric_string(arg[0]) == 0)
+	else if (nb_arg > 0 && (is_numeric_string(arg[0]) == 0))
 	{
 		pipex->code_err = 2;
 		ft_printf("exit : %s : numeric argument required\n", arg[0]);
