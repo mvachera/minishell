@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:20:53 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/14 21:34:34 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:16:08 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*tonegatif(t_pipex *pipex, char *str)
 	int		i;
 
 	i = 0;
-	if (is_dollars(str) == 1)
+	if (ft_strchr(str, '$'))
 		pipex->is_dollars = 1;
 	while (str[i])
 	{

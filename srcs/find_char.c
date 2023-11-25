@@ -6,22 +6,24 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 06:46:52 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 08:16:35 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:14:18 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_dollars(char *str)
+int	is_dollars(t_pipex *pipex, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (str[i])
+	j = 0;
+	if (i != 0 && !ft_strcmp(pipex->tab[i - 1], "<<"))
+		return (0);
+	while (pipex->tab[i][j])
 	{
-		if (str[i] == '$')
+		if (pipex->tab[i][j] == '$')
 			return (1);
-		i++;
+		j++;
 	}
 	return (0);
 }

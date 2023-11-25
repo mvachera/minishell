@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:55:16 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/14 22:09:19 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:15:30 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int			stop_str(char *str);
 int			check_quotes(char **tab, t_pipex *pipex);
 int			find_quotes(char *str);
 void		handle_quotes(char *str);
-char		*handle_quotes2(char *str);
+char		*handle_quotes2(char *s);
 int			is_negatif(char *str);
 void		negatif_to_positif(char *str);
 void		positif_to_negatif(char *str);
@@ -176,7 +176,7 @@ void		new_tab(t_pipex *pipex, char **dst_tab, char **all_var);
 char		*handle_array_dollar(char **dst_tab, int d);
 void		handle_array_dollar2(char *dst, char **dst_tab, int d);
 int			get_nb_var(t_pipex *pipex, char **s, int d);
-int			is_dollars(char *str);
+int			is_dollars(t_pipex *pipex, int i);
 char		*handle_interrogation(t_pipex *pipex, char *str);
 char		*strange_not_first(t_pipex *pipex, char *str, char *after_str,
 				int len);

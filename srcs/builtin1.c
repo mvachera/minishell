@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:43:12 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/12 08:22:01 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:12:13 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,7 @@ void	pwd_command(void)
 	char	cwd[1024];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		ft_putstr_fd(cwd, 1);
-		ft_putstr_fd("\n", 1);
-	}
+		printf("%s\n", cwd);
 	else
 		perror("getcwd");
 }

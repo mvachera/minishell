@@ -6,7 +6,7 @@
 /*   By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:37:58 by mvachera          #+#    #+#             */
-/*   Updated: 2023/11/11 17:50:10 by mvachera         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:34:32 by mvachera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,30 +84,31 @@ void	handle_quotes(char *str)
 	}
 }
 
-char	*handle_quotes2(char *str)
+char	*handle_quotes2(char *s)
 {
 	char	*dest;
 	char	c;
 	int		len;
-	int		i;
-	int		j;
+	int		i[2];
 
 	len = 0;
-	while (str[len + 1])
+	while (s[len + 1])
 		len++;
 	dest = ft_calloc(sizeof(char), len);
 	if (!dest)
 		return (NULL);
-	j = 0;
-	i = 0;
-	while (str[i] && j < len - 1 && str[i] != '\'' && str[i] != '\"')
-		dest[j++] = str[i++];
-	c = str[i++];
-	while (str[i] && j < len - 1)
+	i[1] = 0;
+	i[0] = 0;
+	while (s[i[0]] && i[1] < len - 1 && s[i[0]] != '\'' && s[i[0]] != '\"')
+		dest[i[1]++] = s[i[0]++];
+	c = s[i[0]++];
+	while (s[i[0]] && i[1] < len - 1)
 	{
-		while (str[i] && str[i] == c)
-			i++;
-		dest[j++] = str[i++];
+		while (s[i[0]] && s[i[0]] == c)
+			i[0]++;
+		if (!s[i[0]])
+			break ;
+		dest[i[1]++] = s[i[0]++];
 	}
 	return (dest);
 }
