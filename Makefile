@@ -6,7 +6,7 @@
 #    By: mvachera <mvachera@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/02 07:38:17 by mvachera          #+#    #+#              #
-#    Updated: 2023/11/14 20:09:12 by mvachera         ###   ########.fr        #
+#    Updated: 2023/11/26 17:23:09 by mvachera         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ ${NAME} : ${OBJ}
 		${CC} ${OBJ} -o ${NAME} ${FT_LIBFT} -lreadline ${FT_PRINTF}
 
 leaks : all
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=ignore.txt   ./minishell 
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=ignore.txt   ./minishell
 
 clean :
 	${RM} ${OBJ} ${OBJ_BONUS}
